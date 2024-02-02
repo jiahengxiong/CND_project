@@ -11,7 +11,7 @@ ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "QPSK_1": {"rate": 200, "channel": 75, "reach": 3000},
                   "QPSK_2": {"rate": 100, "channel": 50, "reach": 3000}}
 
-EOE_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
+OEO_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
                    "PCS64QAM_2": {"rate": 700, "channel": 100, "reach": 400},
                    "16QAM_1": {"rate": 600, "channel": 100, "reach": 700},
                    "PCS16QAM_1": {"rate": 500, "channel": 100, "reach": 1300},
@@ -41,7 +41,7 @@ def gen_request(num):
     request = []
     for i in range(0, num):
         src, dst = random.sample(range(1, 8), 2)
-        rate = random.sample(range(0, 3), 1)[0]
+        rate = random.sample(range(0, 4), 1)[0]
 
         request.append((src, dst, rate_list[rate], i + 1))
 
@@ -67,7 +67,7 @@ def link_is_available(modulation, edge_data):
     return False
 
 
-def find_shortest_path(request, network):
+def find_shortest_path_ZR(request, network):
     # request[source, destination, rate, id]
     requests = {"source": request[0], "destination": request[1], "rate": request[2], "id": request[3]}
     modulation = {}
@@ -108,6 +108,8 @@ def find_shortest_path(request, network):
     return path, modulation
 
 
+
+
 def build_distance(path, network):
     distance_table = {}
     G = network.topology
@@ -137,3 +139,6 @@ def compute_cost_ZR(path, modulation, network):
     print(modulation)
     power = 6 * num_ZR
     return power
+
+
+
