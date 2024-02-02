@@ -2,6 +2,8 @@ import networkx as nx
 import random
 import matplotlib.pyplot as plt
 import heapq
+import math
+import collections
 
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
@@ -43,8 +45,8 @@ def generate_resource_graph(network):
 
 def link_is_available(modulation, edge_data):
     for num, mod in enumerate(modulation):
-        if edge_data['distance'] <= modulation[mod]['reach'] and edge_data['channels'] >= 1 + modulation[mod][
-            'channel'] / 2:
+        if edge_data['distance'] <= modulation[mod]['reach'] and edge_data['channels'] >= math.ceil(modulation[mod][
+                                                                                                        'channel'] / 2):
             return True
 
     return False
@@ -88,4 +90,22 @@ def find_shortest_path(request, network):
         current_node = previous_nodes[current_node]
     if path:
         path.insert(0, current_node)
-    return path
+    return path, modulation
+
+
+def build_distance(path, network):
+    distance_table = {}
+    G = network.topology
+    for i in range(len(path) - 1):
+        distance_table[path[i]] = {}
+        cumulative_distance = 0
+        for j in range(i + 1, len(path)):
+            cumulative_distance += G[path[j - 1]][path[j]]['distance']
+            distance_table[path[i]][path[j]] = cumulative_distance
+    return distance_table
+
+
+def compute_cost_ZR(path, distance_table, modulation):
+    print(path)
+    print(distance_table)
+    print(modulation)
