@@ -1,6 +1,5 @@
 import networkx as nx
 from utils.network import network as N
-import random
 from utils.utils import *
 import matplotlib.pyplot as plt
 import heapq
@@ -24,11 +23,22 @@ def ZR_serve(network, requests):
                 G[path[j]][path[j + 1]]['occupied_requests'].append(i)
             request_table[i] = path
             num_served = num_served + 1
-    for num, r in enumerate(request_table):
-        power = compute_cost_ZR(request_table[r], modulation, network)
-        cost = cost + power
+            power = compute_cost_ZR(path, modulation, network)
+            cost = cost + power
     average_cost = cost/num_served
     print(average_cost)
+
+
+def gen_request(num):
+    rate_list = [100, 200, 300, 400]
+    request = []
+    for i in range(0, num):
+        src, dst = random.sample(range(1, 8), 2)
+        rate = random.sample(range(0, 3), 1)[0]
+
+        request.append((src, dst, rate_list[rate], i + 1))
+
+    return request
 
 
 if __name__ == '__main__':
@@ -39,8 +49,8 @@ if __name__ == '__main__':
     ZR_OEO.get_topology()
     OEO.get_topology()
 
-    init_num_request = 10
+    init_num_request = 100
     request_list = gen_request(init_num_request)
-    request_list = [(1,4,400,1)]
+    print(request_list)
 
     ZR_serve(ZR, request_list)

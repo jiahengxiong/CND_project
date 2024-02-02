@@ -1,9 +1,11 @@
+import os
 import networkx as nx
 import random
 import matplotlib.pyplot as plt
 import heapq
 import math
 import collections
+
 
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
@@ -21,16 +23,6 @@ EOE_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
                    "QPSK": {"rate": 100, "channel": 50, "reach": 3000}}
 
 
-def gen_request(num):
-    rate_list = [100, 200, 300, 400]
-    request = []
-    for i in range(0, num):
-        src, dst = random.sample(range(1, 8), 2)
-        rate = random.randint(0, 3)
-
-        request.append((src, dst, rate_list[rate], i + 1))
-
-    return request
 
 
 def generate_resource_graph(network):
