@@ -61,7 +61,7 @@ def generate_resource_graph(network):
 def link_is_available(modulation, edge_data):
     for num, mod in enumerate(modulation):
         if edge_data['distance'] <= modulation[mod]['reach'] and edge_data['channels'] >= math.ceil(modulation[mod][
-                                                                                                        'channel'] / 2):
+                                                                                                        'channel'] / 50):
             return True
 
     return False
@@ -89,6 +89,11 @@ def find_shortest_path_ZR(request, network):
         if current_node == end:
             break
 
+        if current_node not in G:
+            print(f"Node {current_node} is not in the graph.")
+            return [], modulation
+
+
         for neighbor in G.neighbors(current_node):
             edge_data = G.get_edge_data(current_node, neighbor)
             tentative_distance = current_distance + edge_data['distance']
@@ -100,12 +105,15 @@ def find_shortest_path_ZR(request, network):
 
     path = []
     current_node = end
-    while previous_nodes[current_node] is not None:
-        path.insert(0, current_node)
-        current_node = previous_nodes[current_node]
-    if path:
-        path.insert(0, current_node)
-    return path, modulation
+    if current_node in previous_nodes and previous_nodes[current_node] is not None:
+        while current_node is not None:
+            path.insert(0, current_node)
+            current_node = previous_nodes.get(current_node, None)
+        return path, modulation
+    else:
+        print(f"No path found from node {start} to node {end}")
+        return [], modulation
+
 
 
 

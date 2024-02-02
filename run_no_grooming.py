@@ -53,9 +53,22 @@ if __name__ == '__main__':
     ZR_OEO.get_topology()
     OEO.get_topology()
 
-    init_num_request = 1
+    init_num_request = 350
     request_list = gen_request(init_num_request)
-    request_list = [(1, 4, 300, 1)]
+    #request_list = [(1, 4, 300, 1)]
 
-    # ZR_serve(ZR, request_list)
-    OEO_serve(OEO, request_list)
+    ZR_serve(ZR, request_list)
+    #OEO_serve(OEO, request_list)
+    G = ZR.topology
+
+    pos = nx.spring_layout(G)  # 为图形设置布局
+    nx.draw(G, pos, with_labels=True)  # 绘制节点和边
+
+    # 准备一个边的标签字典，键是边的元组（节点1, 节点2），值是要显示的标签
+    edge_labels = {(u, v): d['channels'] for u, v, d in G.edges(data=True)}
+
+    # 在边上添加标签
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+
+    # 显示图形
+    plt.show()
