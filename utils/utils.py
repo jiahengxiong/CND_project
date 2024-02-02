@@ -6,7 +6,6 @@ import heapq
 import math
 import collections
 
-
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
                   "QPSK_1": {"rate": 200, "channel": 75, "reach": 3000},
@@ -22,7 +21,31 @@ EOE_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
                    "16QAM_2": {"rate": 200, "channel": 50, "reach": 900},
                    "QPSK": {"rate": 100, "channel": 50, "reach": 3000}}
 
+OEO_ZR_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
+                      "PCS64QAM_2": {"rate": 700, "channel": 100, "reach": 400},
+                      "16QAM_1": {"rate": 600, "channel": 100, "reach": 700},
+                      "PCS16QAM_1": {"rate": 500, "channel": 100, "reach": 1300},
+                      "PCS16QAM_2": {"rate": 400, "channel": 100, "reach": 2500},
+                      "PCS16QAM_3": {"rate": 300, "channel": 100, "reach": 4700},
+                      "64QAM": {"rate": 300, "channel": 50, "reach": 100},
+                      "16QAM_2": {"rate": 200, "channel": 50, "reach": 900},
+                      "QPSK_3": {"rate": 100, "channel": 50, "reach": 3000},
+                      "16QAM_3": {"rate": 400, "channel": 75, "reach": 600},
+                      "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
+                      "QPSK_1": {"rate": 200, "channel": 75, "reach": 3000},
+                      "QPSK_2": {"rate": 100, "channel": 50, "reach": 3000}}
 
+
+def gen_request(num):
+    rate_list = [100, 200, 300, 400]
+    request = []
+    for i in range(0, num):
+        src, dst = random.sample(range(1, 8), 2)
+        rate = random.sample(range(0, 3), 1)[0]
+
+        request.append((src, dst, rate_list[rate], i + 1))
+
+    return request
 
 
 def generate_resource_graph(network):
@@ -112,6 +135,5 @@ def compute_cost_ZR(path, modulation, network):
     print(path, num_ZR)
     print(distance_table)
     print(modulation)
-    power = 6*num_ZR
+    power = 6 * num_ZR
     return power
-

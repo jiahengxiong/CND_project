@@ -26,19 +26,10 @@ def ZR_serve(network, requests):
             power = compute_cost_ZR(path, modulation, network)
             cost = cost + power
     average_cost = cost/num_served
-    print(average_cost)
+    print(average_cost, num_served)
 
-
-def gen_request(num):
-    rate_list = [100, 200, 300, 400]
-    request = []
-    for i in range(0, num):
-        src, dst = random.sample(range(1, 8), 2)
-        rate = random.sample(range(0, 3), 1)[0]
-
-        request.append((src, dst, rate_list[rate], i + 1))
-
-    return request
+def OEO_serve(network, requests):
+    pass
 
 
 if __name__ == '__main__':
@@ -49,8 +40,9 @@ if __name__ == '__main__':
     ZR_OEO.get_topology()
     OEO.get_topology()
 
-    init_num_request = 100
+    init_num_request = 350
     request_list = gen_request(init_num_request)
     print(request_list)
 
     ZR_serve(ZR, request_list)
+    ZR_serve(OEO, request_list)
