@@ -105,7 +105,21 @@ def build_distance(path, network):
     return distance_table
 
 
-def compute_cost_ZR(path, distance_table, modulation):
-    print(path)
+def compute_cost_ZR(path, modulation, network):
+    distance_table = build_distance(path, network)
+    mod = list(modulation.keys())[0]
+    num_ZR = 2
+    i = 0
+    while i < len(path) - 1:
+        for j in range(i + 1, len(path)):
+            if distance_table[path[i]][path[j]] > modulation[mod]['reach']:
+                num_ZR += 2
+                i = j - 1
+                break
+        i += 1
+    print(path, num_ZR)
     print(distance_table)
     print(modulation)
+    power = 6*num_ZR
+    return power
+
