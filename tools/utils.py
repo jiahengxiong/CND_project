@@ -136,12 +136,16 @@ def compute_cost_ZR(path, modulation, network):
     num_ZR = 2
     i = 0
     while i < len(path) - 1:
+        print(i)
+        found = False
         for j in range(i + 1, len(path)):
             if distance_table[path[i]][path[j]] > modulation[mod]['reach']:
                 num_ZR += 2
                 i = j - 1
+                found = True
                 break
-        i += 1
+        if not found:
+            break
     print(path, num_ZR)
     print(distance_table)
     print(modulation)

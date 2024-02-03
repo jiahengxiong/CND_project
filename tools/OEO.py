@@ -60,6 +60,10 @@ def find_shortest_path_OEO(request, network):
         if current_node == end:
             break
 
+        if current_node not in G:
+            print(f"Node {current_node} is not in the graph.")
+            return [], modulation
+
         for neighbor in G.neighbors(current_node):
             edge_data = G.get_edge_data(current_node, neighbor)
             tentative_distance = current_distance + edge_data['distance']
@@ -71,21 +75,22 @@ def find_shortest_path_OEO(request, network):
 
     path = []
     current_node = end
-    while previous_nodes[current_node] is not None:
-        path.insert(0, current_node)
-        current_node = previous_nodes[current_node]
-    if path:
-        path.insert(0, current_node)
-    return path, modulation
+    if current_node in previous_nodes and previous_nodes[current_node] is not None:
+        while current_node is not None:
+            path.insert(0, current_node)
+            current_node = previous_nodes.get(current_node, None)
+        return path, modulation
+    else:
+        print(f"No path found from node {start} to node {end}")
+        return [], modulation
 
 
 def channel_min(G, u, v, path):
-    channel=[]
+    channel = []
     for i in range(u, v):
-        channel.append(G[path[i]][path[i+1]]['channels'])
+        channel.append(G[path[i]][path[i + 1]]['channels'])
     min_channel = min(channel)
     return min_channel
-
 
 
 def build_distance(path, network):
@@ -101,7 +106,56 @@ def build_distance(path, network):
     return distance_table
 
 
+def update_network(u, path, mod_reach, mod_keys, modulation, network):
+    G = network.topology
+    print(u, mod_reach)
+    if max(mod_reach) > min(mod_reach) or len(mod_reach) == 1:
+        mod = mod_keys[mod_reach.index(max(mod_reach))]
+        for i in range(u, max(mod_reach)):
+            G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
+                modulation[mod]['channel'] / 50)
+            G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
+                modulation[mod]['channel'] / 50)
+    else:
+        max_reach = max(mod_reach)
+        channel = []
+        for i in range(0, len(mod_reach)):
+            if mod_reach[i] == max_reach:
+                channel.append(modulation[mod_keys[i]]['channel'])
+
+        min_channel = min(channel)
+        for i in range(u, max(mod_reach)):
+            G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
+                min_channel / 50)
+            G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
+                min_channel / 50)
+
+
 def OEO_serve_request(path, modulation, network):
     print(path, modulation)
     distance_table = build_distance(path, network)
     print(distance_table)
+    mod_keys = list(modulation.keys())
+    print(mod_keys)
+    '''modulation = {'PCS16QAM_3': {'rate': 300, 'channel': 100, 'reach': 400},
+                  '64QAM': {'rate': 300, 'channel': 50, 'reach': 200}}'''
+
+    mux = 1
+    i = 0
+    while i < len(path) - 1:
+        mod_reach = [0 for _ in range(len(mod_keys))]
+        for m in range(len(mod_keys)):
+            for j in range(i + 1, len(path)):
+                if distance_table[path[i]][path[j]][0] > modulation[mod_keys[m]]['reach'] or \
+                        distance_table[path[i]][path[j]][1] < math.ceil(modulation[mod_keys[m]][
+                                                                            'channel'] / 50):
+                    mod_reach[m] = j - 1
+                    break
+                mod_reach[m] = j
+        mux = mux + 1
+        update_network(i, path, mod_reach, mod_keys, modulation, network)
+        i = max(mod_reach)
+
+    power = 0
+    return power
+
