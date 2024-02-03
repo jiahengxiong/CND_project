@@ -1,9 +1,7 @@
-import networkx as nx
-from tools.network import network as N
-from tools.utils import *
-from tools.OEO import *
+from CND_project.tools.no_grooming.network import network as N
+from CND_project.tools.no_grooming.utils import *
+from CND_project.tools.no_grooming.OEO import *
 import matplotlib.pyplot as plt
-import heapq
 import math
 
 
@@ -55,7 +53,7 @@ if __name__ == '__main__':
     ZR_OEO.get_topology()
     OEO.get_topology()
 
-    init_num_request = 350
+    init_num_request = 1000
     request_list = gen_request(init_num_request)
     #request_list = [(1, 4, 300, 1)]
 
