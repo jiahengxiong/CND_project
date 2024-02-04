@@ -132,8 +132,8 @@ def OEO_serve_request(path, modulation, network):
     print(distance_table)
     mod_keys = list(modulation.keys())
     print(mod_keys)
-    '''modulation = {'PCS16QAM_3': {'rate': 300, 'channel': 100, 'reach': 400},
-                  '64QAM': {'rate': 300, 'channel': 50, 'reach': 200}}'''
+    """modulation = {'PCS16QAM_3': {'rate': 300, 'channel': 100, 'reach': 400},
+                  '64QAM': {'rate': 300, 'channel': 50, 'reach': 200}}"""
 
     mux = 1
     i = 0
@@ -150,6 +150,7 @@ def OEO_serve_request(path, modulation, network):
         mux = mux + 1
         update_network(i, path, mod_reach, mod_keys, modulation, network)
         i = max(mod_reach)
+    print('mux:', mux)
 
     power = 0
     return power

@@ -1,3 +1,4 @@
+from CND_project.tools.no_grooming.ZR_OEO import find_shortest_path_mix, mix_serve_request
 from CND_project.tools.no_grooming.network import network as N
 from CND_project.tools.no_grooming.utils import *
 from CND_project.tools.no_grooming.OEO import *
@@ -40,7 +41,24 @@ def OEO_serve(network, requests):
             # assign modulation
 
             power = OEO_serve_request(path, modulation, network)
-            num_served+=1
+            num_served += 1
+
+    print(num_served)
+
+
+def mixed_serve(network, requests):
+    request_table = {}
+    G = network.topology
+    num_served = 0
+    cost = 0
+    for i in requests:
+        path, modulation = find_shortest_path_mix(i, network)
+        # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
+        if len(path) > 0:
+            # assign modulation
+
+            power = mix_serve_request(path, modulation, network)
+            num_served += 1
 
     print(num_served)
 
@@ -53,13 +71,14 @@ if __name__ == '__main__':
     ZR_OEO.get_topology()
     OEO.get_topology()
 
-    init_num_request = 1000
+    init_num_request = 350
     request_list = gen_request(init_num_request)
-    #request_list = [(1, 4, 300, 1)]
+    # request_list = [(1, 4, 300, 1)]
 
     #ZR_serve(ZR, request_list)
-    OEO_serve(OEO, request_list)
-    G = OEO.topology
+    #OEO_serve(OEO, request_list)
+    mixed_serve(ZR_OEO, request_list)
+    G = ZR_OEO.topology
 
     pos = nx.spring_layout(G)
     nx.draw(G, pos, with_labels=True)
