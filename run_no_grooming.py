@@ -94,9 +94,9 @@ if __name__ == '__main__':
         oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'num_served': num_served_OEO}
         average_cost_opaque, num_served_opaque = opaque_serve(ZR_opaque, request_list)
         opaque[init_num_request] = {'ave_cost': average_cost_opaque, 'num_served': num_served_opaque}
-    print(zr)
-    print(oeo)
-    print(opaque)
+    print("ZR_bypass: ", zr)
+    print("OEO_bypass: ", oeo)
+    print("ZR_opaque", opaque)
     """G = ZR.topology
 
     pos = nx.spring_layout(G)
