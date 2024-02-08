@@ -40,7 +40,7 @@ def gen_request(num):
     rate_list = [100, 200, 300, 400]
     request = []
     for i in range(0, num):
-        src, dst = random.sample(range(1, 8), 2)
+        src, dst = random.sample(range(1, 17), 2)
         rate = random.sample(range(0, 4), 1)[0]
 
         request.append((src, dst, rate_list[rate], i + 1))
@@ -51,17 +51,19 @@ def gen_request(num):
 def generate_resource_graph(network):
     G = nx.Graph()
     for u, v, data in network.topology.edges(data=True):
-        if data['occupied_channel'] == 96:
+        if data['channels'] == 0:
             continue
         else:
             G.add_edge(u, v, **data)
+            G[u][v]['distance'] = G[u][v]['distance'] + G[u][v]['occupied_channel']
+
     return G
 
 
 def link_is_available(modulation, edge_data):
     for num, mod in enumerate(modulation):
         if edge_data['distance'] <= modulation[mod]['reach'] and edge_data['channels'] >= math.ceil(modulation[mod][
-                                                                                                        'channel'] / 50):
+                                                                                                        'channel'] / 25):
             return True
 
     return False

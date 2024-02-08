@@ -1,7 +1,7 @@
 import heapq
 import math
 
-from CND_project.tools.no_grooming.utils import generate_resource_graph, link_is_available
+from CND_project.tools.no_grooming.ZR import generate_resource_graph, link_is_available
 
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
@@ -104,13 +104,13 @@ def build_distance(path, network):
 def update_network(u, path, mod_reach, mod_keys, modulation, network):
     G = network.topology
     print(u, mod_reach)
-    if max(mod_reach) > min(mod_reach) or len(mod_reach) == 1:
+    if mod_reach.count(max(mod_reach)) == 1 or len(mod_reach) == 1:
         mod = mod_keys[mod_reach.index(max(mod_reach))]
         for i in range(u, max(mod_reach)):
             G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
-                modulation[mod]['channel'] / 50)
+                modulation[mod]['channel'] / 25)
             G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
-                modulation[mod]['channel'] / 50)
+                modulation[mod]['channel'] / 25)
     else:
         max_reach = max(mod_reach)
         channel = []
@@ -121,9 +121,9 @@ def update_network(u, path, mod_reach, mod_keys, modulation, network):
         min_channel = min(channel)
         for i in range(u, max(mod_reach)):
             G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
-                min_channel / 50)
+                min_channel / 25)
             G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
-                min_channel / 50)
+                min_channel / 25)
 
 
 def OEO_serve_request(path, modulation, network):
@@ -143,7 +143,7 @@ def OEO_serve_request(path, modulation, network):
             for j in range(i + 1, len(path)):
                 if distance_table[path[i]][path[j]][0] > modulation[mod_keys[m]]['reach'] or \
                         distance_table[path[i]][path[j]][1] < math.ceil(modulation[mod_keys[m]][
-                                                                            'channel'] / 50):
+                                                                            'channel'] / 25):
                     mod_reach[m] = j - 1
                     break
                 mod_reach[m] = j
@@ -152,6 +152,6 @@ def OEO_serve_request(path, modulation, network):
         i = max(mod_reach)
     print('mux:', mux)
 
-    power = 0
+    power = 12 * mux + mux * modulation[mod_keys[0]]['rate']/100
     return power
 

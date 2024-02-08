@@ -1,8 +1,7 @@
 import heapq
 import math
 
-from CND_project.tools.no_grooming.utils import generate_resource_graph, link_is_available
-
+from CND_project.tools.no_grooming.ZR import generate_resource_graph, link_is_available
 
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
@@ -33,13 +32,15 @@ OEO_ZR_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150, 
                       "QPSK_1": {"rate": 200, "channel": 75, "reach": 3000, "device": "ZR"},
                       "QPSK_2": {"rate": 100, "channel": 50, "reach": 3000, "device": "ZR"}}
 
-def find_shortest_path_mix(request, network):
+
+def find_shortest_path_opaque(request, network):
+    # request[source, destination, rate, id]
     # request[source, destination, rate, id]
     requests = {"source": request[0], "destination": request[1], "rate": request[2], "id": request[3]}
     modulation = {}
-    for num, mod in enumerate(OEO_ZR_REACH_TABLE):
-        if OEO_ZR_REACH_TABLE[mod]['rate'] == requests['rate']:
-            modulation[mod] = OEO_ZR_REACH_TABLE [mod]
+    for num, mod in enumerate(ZR_REACH_TABLE):
+        if ZR_REACH_TABLE[mod]['rate'] == requests['rate']:
+            modulation[mod] = ZR_REACH_TABLE[mod]
     G = generate_resource_graph(network)
     start = requests["source"]
     end = requests["destination"]
@@ -108,9 +109,9 @@ def update_network(u, path, mod_reach, mod_keys, modulation, network):
         mod = mod_keys[mod_reach.index(max(mod_reach))]
         for i in range(u, max(mod_reach)):
             G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
-                modulation[mod]['channel'] / 50)
+                modulation[mod]['channel'] / 25)
             G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
-                modulation[mod]['channel'] / 50)
+                modulation[mod]['channel'] / 25)
     else:
         max_reach = max(mod_reach)
         channel = []
@@ -119,20 +120,19 @@ def update_network(u, path, mod_reach, mod_keys, modulation, network):
                 channel.append(modulation[mod_keys[i]]['channel'])
 
         min_channel = min(channel)
-        for num,mod in enumerate(modulation):
+        for num, mod in enumerate(modulation):
             if min_channel == modulation[mod]['channel']:
                 break
         for i in range(u, max(mod_reach)):
             G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
-                min_channel / 50)
+                min_channel / 25)
             G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
-                min_channel / 50)
+                min_channel / 25)
 
     return mod
 
 
-def mix_serve_request(path, modulation, network):
-
+def compute_cost_opaque(path, modulation, network):
     distance_table = build_distance(path, network)
 
     mod_keys = list(modulation.keys())
@@ -140,23 +140,6 @@ def mix_serve_request(path, modulation, network):
     """modulation = {'PCS16QAM_3': {'rate': 300, 'channel': 100, 'reach': 400},
                   '64QAM': {'rate': 300, 'channel': 50, 'reach': 200}}"""
 
-    devises = []
-    i = 0
-    while i < len(path) - 1:
-        mod_reach = [0 for _ in range(len(mod_keys))]
-        for m in range(len(mod_keys)):
-            for j in range(i + 1, len(path)):
-                if distance_table[path[i]][path[j]][0] > modulation[mod_keys[m]]['reach'] or \
-                        distance_table[path[i]][path[j]][1] < math.ceil(modulation[mod_keys[m]][
-                                                                            'channel'] / 50):
-                    mod_reach[m] = j - 1
-                    break
-                mod_reach[m] = j
-        mod = update_network(i, path, mod_reach, mod_keys, modulation, network)
-        devises.append(modulation[mod]['device'])
-        print(devises,distance_table, modulation)
-        i = max(mod_reach)
+    power = 6*(2*(len(path) - 2) + 2)
 
-    power = 0
     return power
-
