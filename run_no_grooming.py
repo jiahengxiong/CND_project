@@ -4,7 +4,7 @@ from CND_project.tools.no_grooming.ZR import *
 from CND_project.tools.no_grooming.OEO import *
 import matplotlib.pyplot as plt
 import math
-import  json
+import json
 
 
 def ZR_serve(network, requests):
