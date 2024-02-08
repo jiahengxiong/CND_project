@@ -4,6 +4,7 @@ from CND_project.tools.no_grooming.ZR import *
 from CND_project.tools.no_grooming.OEO import *
 import matplotlib.pyplot as plt
 import math
+import  json
 
 
 def ZR_serve(network, requests):
@@ -78,25 +79,33 @@ if __name__ == '__main__':
     zr = {}
     oeo = {}
     opaque = {}
-    for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
-        ZR = N()
-        ZR_opaque = N()
-        OEO = N()
-        ZR.get_topology()
-        ZR_opaque.get_topology()
-        OEO.get_topology()
-        request_list = gen_request(init_num_request)
-        # request_list = [(1,12,400,1)]
+    for i in range(0,10):
+        for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
+            ZR = N()
+            ZR_opaque = N()
+            OEO = N()
+            ZR.get_topology()
+            ZR_opaque.get_topology()
+            OEO.get_topology()
+            request_list = gen_request(init_num_request)
+            # request_list = [(1,12,400,1)]
 
-        average_cost_ZR, num_served_ZR = ZR_serve(ZR, request_list)
-        zr[init_num_request] = {'ave_cost':average_cost_ZR,'num_served':num_served_ZR}
-        average_cost_OEO, num_served_OEO = OEO_serve(OEO, request_list)
-        oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'num_served': num_served_OEO}
-        average_cost_opaque, num_served_opaque = opaque_serve(ZR_opaque, request_list)
-        opaque[init_num_request] = {'ave_cost': average_cost_opaque, 'num_served': num_served_opaque}
-    print("ZR_bypass: ", zr)
-    print("OEO_bypass: ", oeo)
-    print("ZR_opaque", opaque)
+            average_cost_ZR, num_served_ZR = ZR_serve(ZR, request_list)
+            zr[init_num_request] = {'ave_cost':average_cost_ZR,'num_served':num_served_ZR}
+            average_cost_OEO, num_served_OEO = OEO_serve(OEO, request_list)
+            oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'num_served': num_served_OEO}
+            average_cost_opaque, num_served_opaque = opaque_serve(ZR_opaque, request_list)
+            opaque[init_num_request] = {'ave_cost': average_cost_opaque, 'num_served': num_served_opaque}
+        with open('no_grooming.txt', 'a') as file:
+            file.write("ZR_bypass:\n")
+            file.write(json.dumps(zr) + '\n')
+            file.write("ZR_opaque:\n")
+            file.write(json.dumps(opaque) + '\n')
+            file.write("OEO_bypass:\n")
+            file.write(json.dumps(oeo) + '\n')
+            file.write("****************************\n")
+
+
     """G = ZR.topology
 
     pos = nx.spring_layout(G)
