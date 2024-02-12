@@ -12,6 +12,7 @@ def ZR_serve(network, requests):
     G = network.topology
     num_served = 0
     cost = 0
+    Tpb = 0
     for i in requests:
         path, modulation = find_shortest_path_ZR(i, network)
         # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
@@ -26,7 +27,8 @@ def ZR_serve(network, requests):
             num_served = num_served + 1
             power = compute_cost_ZR(path, modulation, network)
             cost = cost + power
-    average_cost = cost / num_served
+            Tpb += float(i[2])/1000
+    average_cost = cost / Tpb
     print(average_cost, num_served)
     return average_cost, num_served
 
@@ -36,6 +38,7 @@ def OEO_serve(network, requests):
     G = network.topology
     num_served = 0
     cost = 0
+    Tpb = 0
     for i in requests:
         path, modulation = find_shortest_path_OEO(i, network)
         # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
@@ -45,8 +48,9 @@ def OEO_serve(network, requests):
             power = OEO_serve_request(path, modulation, network)
             num_served += 1
             cost = cost + power
+            Tpb += float(i[2])/1000
 
-    average_cost = cost / num_served
+    average_cost = cost / Tpb
     print(num_served, average_cost)
     return average_cost, num_served
 
@@ -56,6 +60,7 @@ def opaque_serve(network, requests):
     G = network.topology
     num_served = 0
     cost = 0
+    Tpb = 0
     for i in requests:
         path, modulation = find_shortest_path_opaque(i, network)
         # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
@@ -70,7 +75,8 @@ def opaque_serve(network, requests):
             num_served = num_served + 1
             power = compute_cost_opaque(path, modulation, network)
             cost = cost + power
-    average_cost = cost / num_served
+            Tpb = Tpb + float(i[2])/1000
+    average_cost = cost / Tpb
     print(average_cost, num_served)
     return average_cost, num_served
 
@@ -79,7 +85,7 @@ if __name__ == '__main__':
     zr = {}
     oeo = {}
     opaque = {}
-    for i in range(0,10):
+    for i in range(0, 10):
         for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
             ZR = N()
             ZR_opaque = N()
@@ -91,7 +97,7 @@ if __name__ == '__main__':
             # request_list = [(1,12,400,1)]
 
             average_cost_ZR, num_served_ZR = ZR_serve(ZR, request_list)
-            zr[init_num_request] = {'ave_cost':average_cost_ZR,'num_served':num_served_ZR}
+            zr[init_num_request] = {'ave_cost': average_cost_ZR, 'num_served': num_served_ZR}
             average_cost_OEO, num_served_OEO = OEO_serve(OEO, request_list)
             oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'num_served': num_served_OEO}
             average_cost_opaque, num_served_opaque = opaque_serve(ZR_opaque, request_list)
@@ -105,14 +111,21 @@ if __name__ == '__main__':
             file.write(json.dumps(oeo) + '\n')
             file.write("****************************\n")
 
+    G = ZR.topology
 
-    """G = ZR.topology
+    for u, v, data in G.edges(data=True):
+        data['weight'] = 500-data['distance']
 
-    pos = nx.spring_layout(G)
+    pos = nx.spring_layout(G, weight='weight')
+
+    # 绘制节点和边
     nx.draw(G, pos, with_labels=True)
 
-    edge_labels = {(u, v): d['channels'] for u, v, d in G.edges(data=True)}
-
+    edge_labels = {(u, v): data['distance'] for u, v, data in G.edges(data=True)}
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
-    plt.show()"""
+    # 先保存图像
+    plt.savefig('no_grooming.png')
+
+    # 然后显示图表
+    plt.show()
