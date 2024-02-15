@@ -29,8 +29,8 @@ def ZR_serve(network, requests):
             cost = cost + power
             Tpb += float(i[2])/1000
     average_cost = cost / Tpb
-    print(average_cost, num_served)
-    return average_cost, num_served
+    print(average_cost, Tpb)
+    return average_cost, Tpb
 
 
 def OEO_serve(network, requests):
@@ -51,8 +51,8 @@ def OEO_serve(network, requests):
             Tpb += float(i[2])/1000
 
     average_cost = cost / Tpb
-    print(num_served, average_cost)
-    return average_cost, num_served
+    print(Tpb, average_cost)
+    return average_cost, Tpb
 
 
 def opaque_serve(network, requests):
@@ -77,8 +77,8 @@ def opaque_serve(network, requests):
             cost = cost + power
             Tpb = Tpb + float(i[2])/1000
     average_cost = cost / Tpb
-    print(average_cost, num_served)
-    return average_cost, num_served
+    print(average_cost, Tpb)
+    return average_cost, Tpb
 
 
 if __name__ == '__main__':
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     oeo = {}
     opaque = {}
     for i in range(0, 10):
-        for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
+        for init_num_request in [350,400,450,500,550,600,650,700]:
             ZR = N()
             ZR_opaque = N()
             OEO = N()
@@ -95,13 +95,13 @@ if __name__ == '__main__':
             OEO.get_topology()
             request_list = gen_request(init_num_request)
             # request_list = [(1,12,400,1)]
-
-            average_cost_ZR, num_served_ZR = ZR_serve(ZR, request_list)
-            zr[init_num_request] = {'ave_cost': average_cost_ZR, 'num_served': num_served_ZR}
-            average_cost_OEO, num_served_OEO = OEO_serve(OEO, request_list)
-            oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'num_served': num_served_OEO}
-            average_cost_opaque, num_served_opaque = opaque_serve(ZR_opaque, request_list)
-            opaque[init_num_request] = {'ave_cost': average_cost_opaque, 'num_served': num_served_opaque}
+            print(request_list)
+            average_cost_ZR, TB_ZR = ZR_serve(ZR, request_list)
+            zr[init_num_request] = {'ave_cost': average_cost_ZR, 'TB': float(init_num_request/1000)*250}
+            average_cost_OEO, TB_OEO = OEO_serve(OEO, request_list)
+            oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'TB': float(init_num_request/1000)*250}
+            average_cost_opaque, TB_opaque = opaque_serve(ZR_opaque, request_list)
+            opaque[init_num_request] = {'ave_cost': average_cost_opaque, 'TB': float(init_num_request/1000)*250}
         with open('no_grooming.txt', 'a') as file:
             file.write("ZR_bypass:\n")
             file.write(json.dumps(zr) + '\n')
