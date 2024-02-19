@@ -35,26 +35,27 @@ OEO_ZR_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
                       "QPSK_1": {"rate": 200, "channel": 75, "reach": 3000},
                       "QPSK_2": {"rate": 100, "channel": 50, "reach": 3000}}
 
+import random
+
+
+import random
 
 def gen_request(num):
     rate_list = [100, 200, 300, 400]
-    avg_rate = sum(rate_list) / len(rate_list)
-    lim_rate = avg_rate*num
+    avg_rate = float(sum(rate_list) / len(rate_list))
+    lim_rate = float(avg_rate * num)
     print(avg_rate, lim_rate)
     request = []
-    rate = []
-    for i in range(0, num):
+    total_rate = 0
+
+    for i in range(num*5):
         src, dst = random.sample(range(1, 17), 2)
-        rate_index = random.sample(range(0, 4), 1)[0]
-        if sum(rate) + rate_list[rate_index] > lim_rate:
-            request.append((src, dst, lim_rate - sum(rate), i + 1))
-            break
-        if sum(rate) + rate_list[rate_index] < lim_rate:
-            request.append((src, dst, rate_list[rate_index], i + 1))
-            rate.append(rate_list[rate_index])
-        if sum(rate) + rate_list[rate_index] == lim_rate:
-            request.append((src, dst, rate_list[rate_index], i + 1))
-            break
+        if total_rate < lim_rate:
+            rate = random.choice(rate_list)
+            if total_rate + rate > lim_rate:
+                rate = lim_rate - total_rate
+            request.append((src, dst, rate, i + 1))
+            total_rate += rate
 
     return request
 
