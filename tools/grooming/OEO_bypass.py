@@ -5,10 +5,15 @@ from CND_project.tools.no_grooming.ZR import generate_resource_graph, link_is_av
 import uuid
 from matplotlib import pyplot as plt
 
-ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
-                  "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
-                  "QPSK_1": {"rate": 200, "channel": 75, "reach": 3000},
-                  "QPSK_2": {"rate": 100, "channel": 50, "reach": 3000}}
+OEO_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150},
+                  "PCS64QAM_2": {"rate": 700, "channel": 100, "reach": 400},
+                  "16QAM_1": {"rate": 600, "channel": 100, "reach": 700},
+                  "PCS16QAM_1": {"rate": 500, "channel": 100, "reach": 1300},
+                  "PCS16QAM_2": {"rate": 400, "channel": 100, "reach": 2500},
+                  "PCS16QAM_3": {"rate": 300, "channel": 100, "reach": 4700},
+                  "64QAM": {"rate": 300, "channel": 50, "reach": 100},
+                  "16QAM_2": {"rate": 200, "channel": 50, "reach": 900},
+                  "QPSK": {"rate": 100, "channel": 50, "reach": 3000}}
 
 
 def path_mod_believable(G, path, mod):
@@ -17,7 +22,7 @@ def path_mod_believable(G, path, mod):
         dst = path[i + 1]
         for key, edge_attr in G[src][dst].items():
             if edge_attr["type"] == 'fiber':
-                if edge_attr["channels"] >= math.ceil(ZR_REACH_TABLE[mod]['channel'] / 25):
+                if edge_attr["channels"] >= math.ceil(OEO_REACH_TABLE[mod]['channel'] / 25):
                     return True
 
     return False
@@ -26,8 +31,8 @@ def path_mod_believable(G, path, mod):
 def build_virtual_graph(G, mod):
     virtual_graph = nx.MultiGraph()
     for u, v, key, data in G.edges(keys=True, data=True):
-        if data['type'] == 'fiber' and data['channels'] >= math.ceil(ZR_REACH_TABLE[mod]['channel'] / 25) and data[
-            'distance'] <= ZR_REACH_TABLE[mod]['reach']:
+        if data['type'] == 'fiber' and data['channels'] >= math.ceil(OEO_REACH_TABLE[mod]['channel'] / 25) and data[
+            'distance'] <= OEO_REACH_TABLE[mod]['reach']:
             virtual_graph.add_edge(u, v, key=key, **data)
     return virtual_graph
 
@@ -37,23 +42,23 @@ def light_path_available(light_path, G, mod):
         u = light_path[i]
         v = light_path[i + 1]
         for u, v, key, data in G.edges(keys=True, data=True):
-            if data['type'] == 'fiber' and data['channels'] >= math.ceil(ZR_REACH_TABLE[mod]['channel'] / 25):
+            if data['type'] == 'fiber' and data['channels'] >= math.ceil(OEO_REACH_TABLE[mod]['channel'] / 25):
                 return True
 
     return False
 
 
-def gene_auxiliary_graph_ZR_bypass(G, request):
+def gene_auxiliary_graph_OEO_bypass(G, request):
     auxiliary_graph = nx.MultiGraph()
     for u, v, key, data in G.edges(keys=True, data=True):
         if data['type'] == 'fiber':
             auxiliary_graph.add_edge(u, v, key=key, **data)
-    for key, value in enumerate(ZR_REACH_TABLE):
+    for key, value in enumerate(OEO_REACH_TABLE):
         mod = value
-        if ZR_REACH_TABLE[value]['rate'] >= request[2]:
+        if OEO_REACH_TABLE[value]['rate'] >= request[2]:
             virtual_edge = []
             virtual_graph = build_virtual_graph(auxiliary_graph, mod)
-            reach = ZR_REACH_TABLE[value]['reach']
+            reach = OEO_REACH_TABLE[value]['reach']
             for src in virtual_graph.nodes():
                 for dst in virtual_graph.nodes():
                     if src != dst and nx.has_path(virtual_graph, src, dst):
@@ -67,13 +72,13 @@ def gene_auxiliary_graph_ZR_bypass(G, request):
                                          mod=edge[4],
                                          type='virtual')
     mod_list = []
-    for key, value in enumerate(ZR_REACH_TABLE):
-        if ZR_REACH_TABLE[value]['rate'] == request[2]:
+    for key, value in enumerate(OEO_REACH_TABLE):
+        if OEO_REACH_TABLE[value]['rate'] == request[2]:
             mod_list.append(value)
     min_reach = 100000
     for mod in mod_list:
-        if ZR_REACH_TABLE[mod]['reach'] < min_reach:
-            min_reach = ZR_REACH_TABLE[mod]['reach']
+        if OEO_REACH_TABLE[mod]['reach'] < min_reach:
+            min_reach = OEO_REACH_TABLE[mod]['reach']
     for u, v, key, data in G.edges(keys=True, data=True):
         if data['type'] == 'mod_channel' and data['free_capacity'] >= request[2] and data['distance'] <= \
                 min_reach:
@@ -90,13 +95,13 @@ def gene_auxiliary_graph_ZR_bypass(G, request):
     return auxiliary_graph
 
 
-def update_weight_ZR_bypass(G):
+def update_weight_OEO_bypass(G):
     for u, v, key, data in G.edges(keys=True, data=True):
         if data['type'] == 'mod_channel':
             G.edges[u, v, key]['weight'] = 0.001 * data['distance']
         else:
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 12 - 0.0001 * ZR_REACH_TABLE[data['mod']][
-                'rate'] + 0.0001 * math.ceil(ZR_REACH_TABLE[data['mod']]['rate']/25)
+            G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 12 - 0.0001 * OEO_REACH_TABLE[data['mod']][
+                'rate'] + 0.0001 * math.ceil(OEO_REACH_TABLE[data['mod']]['rate'] / 25)
 
     return G
 
@@ -121,7 +126,7 @@ def select_grooming(G, u, v, rate):
     return best_edge
 
 
-def serve_request_ZR_bypass(G, path, request, res_path):
+def serve_request_OEO_bypass(G, path, request, res_path):
     build_path_list = []
     ZR = 0
     for key, value in enumerate(res_path):
@@ -134,14 +139,14 @@ def serve_request_ZR_bypass(G, path, request, res_path):
             distance = res_path[(u, v)][1]
             mod = res_path[(u, v)][2]
             G.add_edge(u, v, key=uuid.uuid4(), type='mod_channel',
-                       free_capacity=ZR_REACH_TABLE[mod]['rate'] - request[2], dependency=light_path, distance=distance)
+                       free_capacity=OEO_REACH_TABLE[mod]['rate'] - request[2], dependency=light_path, distance=distance)
             for j in range(0, len(light_path) - 1):
                 src = light_path[j]
                 dst = light_path[j + 1]
                 for key, edge_attr in G[src][dst].items():
                     if edge_attr.get('type') == 'fiber':
                         G[src][dst][key]['channels'] = G[src][dst][key]['channels'] - math.ceil(
-                            ZR_REACH_TABLE[mod]['channel'] / 25)
+                            OEO_REACH_TABLE[mod]['channel'] / 25)
             ZR = ZR + 2
         else:
             grooming_edge = select_grooming(G, u, v, request[2])
