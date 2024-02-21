@@ -150,13 +150,13 @@ def serve_request_OEO_bypass(G, path, request, res_path):
                         G[src][dst][key]['channels'] = G[src][dst][key]['channels'] - math.ceil(
                             OEO_REACH_TABLE[mod]['channel'] / 25)
             mux = mux + 1
-            traffic = traffic + 2*OEO_REACH_TABLE[mod]['rate']
+            traffic = traffic + 2 * OEO_REACH_TABLE[mod]['rate']
         else:
             grooming_edge = select_grooming(G, u, v, request[2])
             G[grooming_edge[0]][grooming_edge[1]][grooming_edge[2]]['free_capacity'] = \
                 G[grooming_edge[0]][grooming_edge[1]][grooming_edge[2]]['free_capacity'] - request[2]
-            #traffic = traffic + 2*request[2]
-    power = 12 * mux + traffic/100
+            # traffic = traffic + 2*request[2]
+    power = 12 * mux + traffic / 100
     return power
 
 

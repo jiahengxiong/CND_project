@@ -1,9 +1,7 @@
-import heapq
 import math
-import networkx as nx
-from CND_project.tools.no_grooming.ZR import generate_resource_graph, link_is_available
 import uuid
-from matplotlib import pyplot as plt
+
+import networkx as nx
 
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},

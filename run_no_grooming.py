@@ -125,7 +125,7 @@ if __name__ == '__main__':
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
 
     # 先保存图像
-    plt.savefig('no_grooming.png')
+    plt.savefig('german.png')
 
     # 然后显示图表
     plt.show()
