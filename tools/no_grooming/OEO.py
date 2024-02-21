@@ -152,6 +152,6 @@ def OEO_serve_request(path, modulation, network):
         i = max(mod_reach)
     print('mux:', mux)
 
-    power = 12 * mux + mux * modulation[mod_keys[0]]['rate']/100
+    power = 12 * mux + 2*(mux-1) * modulation[mod_keys[0]]['rate']/100
     return power
 

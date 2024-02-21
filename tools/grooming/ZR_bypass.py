@@ -96,7 +96,7 @@ def update_weight_ZR_bypass(G):
             G.edges[u, v, key]['weight'] = 0.001 * data['distance']
         else:
             G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 12 - 0.0001 * ZR_REACH_TABLE[data['mod']][
-                'rate'] + 0.0001 * math.ceil(ZR_REACH_TABLE[data['mod']]['rate']/25)
+                'rate'] + 0.0001 * math.ceil(ZR_REACH_TABLE[data['mod']]['rate'] / 25)
 
     return G
 

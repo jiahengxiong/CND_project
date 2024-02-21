@@ -12,7 +12,7 @@ def ZR_serve(network, requests):
     G = network.topology
     num_served = 0
     cost = 0
-    Tpb = 0
+    served_traffic = 0
     for i in requests:
         path, modulation = find_shortest_path_ZR(i, network)
         # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
@@ -27,10 +27,10 @@ def ZR_serve(network, requests):
             num_served = num_served + 1
             power = compute_cost_ZR(path, modulation, network)
             cost = cost + power
-            Tpb += float(i[2])/1000
-    average_cost = cost / Tpb
-    print(average_cost, Tpb)
-    return average_cost, Tpb
+            served_traffic = served_traffic + i[2]*0.001
+    average_cost = cost / served_traffic
+    print(average_cost, served_traffic)
+    return average_cost, served_traffic
 
 
 def OEO_serve(network, requests):
@@ -38,7 +38,7 @@ def OEO_serve(network, requests):
     G = network.topology
     num_served = 0
     cost = 0
-    Tpb = 0
+    served_traffic = 0
     for i in requests:
         path, modulation = find_shortest_path_OEO(i, network)
         # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
@@ -48,11 +48,10 @@ def OEO_serve(network, requests):
             power = OEO_serve_request(path, modulation, network)
             num_served += 1
             cost = cost + power
-            Tpb += float(i[2])/1000
-
-    average_cost = cost / Tpb
-    print(Tpb, average_cost)
-    return average_cost, Tpb
+            served_traffic = served_traffic + i[2] * 0.001
+    average_cost = cost / served_traffic
+    print(average_cost, served_traffic)
+    return average_cost, served_traffic
 
 
 def opaque_serve(network, requests):
@@ -60,7 +59,7 @@ def opaque_serve(network, requests):
     G = network.topology
     num_served = 0
     cost = 0
-    Tpb = 0
+    served_traffic = 0
     for i in requests:
         path, modulation = find_shortest_path_opaque(i, network)
         # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
@@ -75,10 +74,10 @@ def opaque_serve(network, requests):
             num_served = num_served + 1
             power = compute_cost_opaque(path, modulation, network)
             cost = cost + power
-            Tpb = Tpb + float(i[2])/1000
-    average_cost = cost / Tpb
-    print(average_cost, Tpb)
-    return average_cost, Tpb
+            served_traffic = served_traffic + i[2] * 0.001
+    average_cost = cost / served_traffic
+    print(average_cost, served_traffic)
+    return average_cost, served_traffic
 
 
 if __name__ == '__main__':
@@ -86,7 +85,8 @@ if __name__ == '__main__':
     oeo = {}
     opaque = {}
     for i in range(0, 10):
-        for init_num_request in [350,400,450,500,550,600,650,700]:
+        for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
+            total_traffic = init_num_request * 0.001 * 250
             ZR = N()
             ZR_opaque = N()
             OEO = N()
@@ -97,11 +97,11 @@ if __name__ == '__main__':
             # request_list = [(1,12,400,1)]
             print(request_list)
             average_cost_ZR, TB_ZR = ZR_serve(ZR, request_list)
-            zr[init_num_request] = {'ave_cost': average_cost_ZR, 'TB': float(init_num_request/1000)*250}
+            zr[total_traffic] = {'ave_cost': average_cost_ZR, 'served_traffic': TB_ZR}
             average_cost_OEO, TB_OEO = OEO_serve(OEO, request_list)
-            oeo[init_num_request] = {'ave_cost': average_cost_OEO, 'TB': float(init_num_request/1000)*250}
+            oeo[total_traffic] = {'ave_cost': average_cost_OEO, 'served_traffic': TB_OEO}
             average_cost_opaque, TB_opaque = opaque_serve(ZR_opaque, request_list)
-            opaque[init_num_request] = {'ave_cost': average_cost_opaque, 'TB': float(init_num_request/1000)*250}
+            opaque[total_traffic] = {'ave_cost': average_cost_opaque, 'served_traffic': TB_opaque}
         with open('no_grooming.txt', 'a') as file:
             file.write("ZR_bypass:\n")
             file.write(json.dumps(zr) + '\n')
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     G = ZR.topology
 
     for u, v, data in G.edges(data=True):
-        data['weight'] = 500-data['distance']
+        data['weight'] = 500 - data['distance']
 
     pos = nx.spring_layout(G, weight='weight')
 
