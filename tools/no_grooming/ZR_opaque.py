@@ -1,7 +1,7 @@
-import heapq
 import math
+import uuid
 
-from CND_project.tools.no_grooming.ZR import generate_resource_graph, link_is_available
+import networkx as nx
 
 ZR_REACH_TABLE = {"16QAM": {"rate": 400, "channel": 75, "reach": 600},
                   "8QAM": {"rate": 300, "channel": 75, "reach": 1800},
@@ -33,113 +33,93 @@ OEO_ZR_REACH_TABLE = {"PCS64QAM_1": {"rate": 800, "channel": 100, "reach": 150, 
                       "QPSK_2": {"rate": 100, "channel": 50, "reach": 3000, "device": "ZR"}}
 
 
-def find_shortest_path_opaque(request, network):
+def gene_auxiliary_graph_ZR_opaque(G, request):
     # request[source, destination, rate, id]
-    # request[source, destination, rate, id]
-    requests = {"source": request[0], "destination": request[1], "rate": request[2], "id": request[3]}
-    modulation = {}
-    for num, mod in enumerate(ZR_REACH_TABLE):
-        if ZR_REACH_TABLE[mod]['rate'] == requests['rate']:
-            modulation[mod] = ZR_REACH_TABLE[mod]
-    G = generate_resource_graph(network)
-    start = requests["source"]
-    end = requests["destination"]
-    # modified dijkstra
-    distances = {node: float('infinity') for node in G.nodes}
-    previous_nodes = {node: None for node in G.nodes}
-    distances[start] = 0
-    priority_queue = [(0, start)]
+    auxiliary_graph = nx.MultiGraph()
+    for key, value in enumerate(ZR_REACH_TABLE):
+        if ZR_REACH_TABLE[value]['rate'] == request[2]:
+            mod = value
+    for node in G.nodes():
+        auxiliary_graph.add_node(node)
+    for u, v, key, data in G.edges(keys=True, data=True):
+        if data['type'] == 'fiber' and data['channels'] >= math.ceil(ZR_REACH_TABLE[mod]['channel'] / 25) and data[
+            'distance'] <= ZR_REACH_TABLE[mod]['reach']:
+            auxiliary_graph.add_edge(u, v, key=key, **data)
+        elif data['type'] != 'fiber' and data['free_capacity'] >= request[2] and data['distance'] <= \
+                ZR_REACH_TABLE[mod]['reach']:
+            auxiliary_graph.add_edge(u, v, key=key, **data)
+            continue
 
-    while priority_queue:
-        current_distance, current_node = heapq.heappop(priority_queue)
+    return auxiliary_graph
 
-        if current_node == end:
+
+def update_weight_ZR_opaque(G):
+    for u, v, key, data in G.edges(keys=True, data=True):
+        if data['type'] == 'fiber':
+            G.edges[u, v, key]['weight'] = 12 + 0.001 * data['distance']
+        else:
+            G.edges[u, v, key]['weight'] = 0.001 * data['distance']
+
+    return G
+
+
+def grooming_available(G, u, v, rate):
+    for key, edge_attr in G[u][v].items():
+        if edge_attr.get('type') == 'mod_channel' and edge_attr.get('free_capacity') >= rate:
+            # print('grooming_available:',edge_attr.get('type'), edge_attr.get('free_capacity'), rate)
+            return True
+    return False
+
+
+def select_grooming(G, u, v, rate):
+    best_edge = None
+    min_free_capacity = float('inf')
+
+    for key, edge_attr in G[u][v].items():
+        if edge_attr.get('type') == 'mod_channel' and edge_attr.get('free_capacity') >= rate:
+            if edge_attr.get('free_capacity') <= min_free_capacity:
+                min_free_capacity = edge_attr.get('free_capacity')
+                best_edge = (u, v, key)
+
+    return best_edge
+
+
+def select_modulation_mode(G, u, v, rate):
+    for key, edge_attr in G[u][v].items():
+        if edge_attr.get('type') == 'fiber':
+            distance = G[u][v][key]['distance']
+            channels = G[u][v][key]['channels']
+
+    best_mode = None
+    max_rate = 0
+
+    for mode, properties in ZR_REACH_TABLE.items():
+        if properties['reach'] >= distance and \
+                properties['rate'] >= rate and \
+                math.ceil(properties['channel'] / 25) <= channels:
+
+            if properties['rate'] >= max_rate:
+                max_rate = properties['rate']
+                best_mode = mode
+
+    # print(best_mode,rate,distance,channels)
+
+    return best_mode
+
+
+def serve_request_ZR_opaque(G, path, request):
+    ZR = 0
+    rate = request[2]
+    mod = None
+    for id, key in enumerate(ZR_REACH_TABLE):
+        if ZR_REACH_TABLE[key]['rate'] == rate:
+            mod = key
             break
-
-        if current_node not in G:
-            print(f"Node {current_node} is not in the graph.")
-            return [], modulation
-
-        for neighbor in G.neighbors(current_node):
-            edge_data = G.get_edge_data(current_node, neighbor)
-            tentative_distance = current_distance + edge_data['distance']
-            if link_is_available(modulation, edge_data):
-                if tentative_distance < distances[neighbor]:
-                    distances[neighbor] = tentative_distance
-                    previous_nodes[neighbor] = current_node
-                    heapq.heappush(priority_queue, (tentative_distance, neighbor))
-
-    path = []
-    current_node = end
-    if current_node in previous_nodes and previous_nodes[current_node] is not None:
-        while current_node is not None:
-            path.insert(0, current_node)
-            current_node = previous_nodes.get(current_node, None)
-        return path, modulation
-    else:
-        print(f"No path found from node {start} to node {end}")
-        return [], modulation
-
-
-def channel_min(G, u, v, path):
-    channel = []
-    for i in range(u, v):
-        channel.append(G[path[i]][path[i + 1]]['channels'])
-    min_channel = min(channel)
-    return min_channel
-
-
-def build_distance(path, network):
-    distance_table = {}
-    G = network.topology
     for i in range(0, len(path) - 1):
-        distance_table[path[i]] = {}
-        cumulative_distance = 0
-        for j in range(i + 1, len(path)):
-            cumulative_distance += G[path[j - 1]][path[j]]['distance']
-            min_channel = channel_min(G, i, j, path)
-            distance_table[path[i]][path[j]] = [cumulative_distance, min_channel]
-    return distance_table
-
-
-def update_network(u, path, mod_reach, mod_keys, modulation, network):
-    G = network.topology
-    print(u, mod_reach)
-    if mod_reach.count(max(mod_reach)) == 1 or len(mod_reach) == 1:
-        mod = mod_keys[mod_reach.index(max(mod_reach))]
-        for i in range(u, max(mod_reach)):
-            G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
-                modulation[mod]['channel'] / 25)
-            G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
-                modulation[mod]['channel'] / 25)
-    else:
-        max_reach = max(mod_reach)
-        channel = []
-        for i in range(0, len(mod_reach)):
-            if mod_reach[i] == max_reach:
-                channel.append(modulation[mod_keys[i]]['channel'])
-
-        min_channel = min(channel)
-        for num, mod in enumerate(modulation):
-            if min_channel == modulation[mod]['channel']:
-                break
-        for i in range(u, max(mod_reach)):
-            G[path[i]][path[i + 1]]['channels'] = G[path[i]][path[i + 1]]['channels'] - math.ceil(
-                min_channel / 25)
-            G[path[i]][path[i + 1]]['occupied_channel'] = G[path[i]][path[i + 1]]['occupied_channel'] + math.ceil(
-                min_channel / 25)
-
-    return mod
-
-
-def compute_cost_opaque(path, modulation, network):
-    distance_table = build_distance(path, network)
-
-    mod_keys = list(modulation.keys())
-
-    """modulation = {'PCS16QAM_3': {'rate': 300, 'channel': 100, 'reach': 400},
-                  '64QAM': {'rate': 300, 'channel': 50, 'reach': 200}}"""
-
-    power = 6*(2*(len(path) - 2) + 2)
-
+        for key, edge_attr in G[path[i]][path[i + 1]].items():
+            if edge_attr.get('type') == 'fiber':
+                G[path[i]][path[i + 1]][key]['channels'] = G[path[i]][path[i + 1]][key]['channels'] - math.ceil(
+                    ZR_REACH_TABLE[mod]['channel'] / 25)
+        ZR += 2
+    power = ZR * 6
     return power

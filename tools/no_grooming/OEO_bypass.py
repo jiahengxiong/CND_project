@@ -53,7 +53,7 @@ def gene_auxiliary_graph_OEO_bypass(G, request):
             auxiliary_graph.add_edge(u, v, key=key, **data)
     for key, value in enumerate(OEO_REACH_TABLE):
         mod = value
-        if OEO_REACH_TABLE[value]['rate'] >= request[2]:
+        if OEO_REACH_TABLE[value]['rate'] == request[2]:
             virtual_edge = []
             virtual_graph = build_virtual_graph(auxiliary_graph, mod)
             reach = OEO_REACH_TABLE[value]['reach']
@@ -98,8 +98,7 @@ def update_weight_OEO_bypass(G):
         if data['type'] == 'mod_channel':
             G.edges[u, v, key]['weight'] = 0.001 * data['distance']
         else:
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 24 - 0.0001 * OEO_REACH_TABLE[data['mod']][
-                'rate'] + 0.0001 * math.ceil(OEO_REACH_TABLE[data['mod']]['rate'] / 25)
+            G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 24 + 0.001 * math.ceil(OEO_REACH_TABLE[data['mod']]['rate'] / 25)
 
     return G
 
@@ -137,9 +136,6 @@ def serve_request_OEO_bypass(G, path, request, res_path):
             light_path = res_path[(u, v)][0]
             distance = res_path[(u, v)][1]
             mod = res_path[(u, v)][2]
-            G.add_edge(u, v, key=uuid.uuid4(), type='mod_channel',
-                       free_capacity=OEO_REACH_TABLE[mod]['rate'] - request[2], dependency=light_path,
-                       distance=distance)
             for j in range(0, len(light_path) - 1):
                 src = light_path[j]
                 dst = light_path[j + 1]

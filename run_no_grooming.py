@@ -1,131 +1,109 @@
-from CND_project.tools.no_grooming.ZR_opaque import find_shortest_path_opaque, compute_cost_opaque
-from CND_project.tools.no_grooming.network import network as N
-from CND_project.tools.no_grooming.ZR import *
-from CND_project.tools.no_grooming.OEO import *
-import matplotlib.pyplot as plt
-import math
 import json
+import math
+import time
+from datetime import timedelta
+
+import matplotlib.pyplot as plt
+
+from CND_project.tools.no_grooming.OEO_bypass import *
+from CND_project.tools.no_grooming.ZR_bypass import *
+from CND_project.tools.no_grooming.ZR_opaque import gene_auxiliary_graph_ZR_opaque, update_weight_ZR_opaque, \
+    serve_request_ZR_opaque
+from CND_project.tools.no_grooming.network import *
 
 
-def ZR_serve(network, requests):
-    request_table = {}
-    G = network.topology
-    num_served = 0
+def ZR_opaque_serve(ZR_opaque_network, ZR_requests):
+    G = ZR_opaque_network.topology
     cost = 0
-    served_traffic = 0
-    for i in requests:
-        path, modulation = find_shortest_path_ZR(i, network)
-        # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
-        if len(path) > 0:
-            for j in range(0, len(path) - 1):
-                G[path[j]][path[j + 1]]['channels'] = G[path[j]][path[j + 1]]['channels'] - math.ceil(
-                    modulation[list(modulation.keys())[0]]['channel'] / 25)
-                G[path[j]][path[j + 1]]['occupied_channel'] = G[path[j]][path[j + 1]]['occupied_channel'] + math.ceil(
-                    modulation[list(modulation.keys())[0]]['channel'] / 25)
-                G[path[j]][path[j + 1]]['occupied_requests'].append(i)
-            request_table[i] = path
-            num_served = num_served + 1
-            power = compute_cost_ZR(path, modulation, network)
-            cost = cost + power
-            served_traffic = served_traffic + i[2]*0.001
-    average_cost = cost / served_traffic
-    print(average_cost, served_traffic)
-    return average_cost, served_traffic
-
-
-def OEO_serve(network, requests):
-    request_table = {}
-    G = network.topology
+    traffic = 0
     num_served = 0
-    cost = 0
-    served_traffic = 0
-    for i in requests:
-        path, modulation = find_shortest_path_OEO(i, network)
-        # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
-        if len(path) > 0:
-            # assign modulation
-
-            power = OEO_serve_request(path, modulation, network)
+    for request in ZR_requests:
+        AG = gene_auxiliary_graph_ZR_opaque(G, request)
+        AG = update_weight_ZR_opaque(AG)
+        if nx.has_path(AG, source=request[0], target=request[1]):
+            path = nx.dijkstra_path(AG, source=request[0], target=request[1])
+            power = serve_request_ZR_opaque(G, path, request)
+            cost += power
+            traffic += request[2] * 0.001
             num_served += 1
-            cost = cost + power
-            served_traffic = served_traffic + i[2] * 0.001
-    average_cost = cost / served_traffic
-    print(average_cost, served_traffic)
-    return average_cost, served_traffic
+
+    print(cost / traffic, traffic, num_served, len(ZR_requests))
+    return cost / traffic, traffic
 
 
-def opaque_serve(network, requests):
-    request_table = {}
-    G = network.topology
-    num_served = 0
+def ZR_bypass_serve(ZR_bypass_network, ZR_bypass_requests):
+    G = ZR_bypass_network.topology
     cost = 0
-    served_traffic = 0
-    for i in requests:
-        path, modulation = find_shortest_path_opaque(i, network)
-        # sorted_modulation = collections.OrderedDict(sorted(modulation.items(), key=lambda item: item[1]['reach']))
-        if len(path) > 0:
-            for j in range(0, len(path) - 1):
-                G[path[j]][path[j + 1]]['channels'] = G[path[j]][path[j + 1]]['channels'] - math.ceil(
-                    modulation[list(modulation.keys())[0]]['channel'] / 25)
-                G[path[j]][path[j + 1]]['occupied_channel'] = G[path[j]][path[j + 1]]['occupied_channel'] + math.ceil(
-                    modulation[list(modulation.keys())[0]]['channel'] / 25)
-                G[path[j]][path[j + 1]]['occupied_requests'].append(i)
-            request_table[i] = path
-            num_served = num_served + 1
-            power = compute_cost_opaque(path, modulation, network)
-            cost = cost + power
-            served_traffic = served_traffic + i[2] * 0.001
-    average_cost = cost / served_traffic
-    print(average_cost, served_traffic)
-    return average_cost, served_traffic
+    traffic_served = 0
+    num_served = 0
+    for request in ZR_bypass_requests:
+        AG = gene_auxiliary_graph_ZR_bypass(G, request)
+        AG = update_weight_ZR_bypass(AG)
+        if nx.has_path(AG, source=request[0], target=request[1]):
+            path = nx.dijkstra_path(AG, source=request[0], target=request[1])
+            res_path = reserve_path(AG, path, request[2])
+            # print(request, path, res_path)
+            power = serve_request_ZR_bypass(G, path, request, res_path)
+            cost += power
+            traffic_served += request[2] * 0.001
+            num_served += 1
+
+    print(cost / traffic_served, traffic_served, num_served, len(ZR_bypass_requests))
+    return cost / traffic_served, traffic_served
+
+
+def OEO_bypass_serve(OEO_bypass_network, OEO_bypass_requests):
+    G = OEO_bypass_network.topology
+    cost = 0
+    traffic_served = 0
+    num_served = 0
+    for request in OEO_bypass_requests:
+        AG = gene_auxiliary_graph_OEO_bypass(G, request)
+        AG = update_weight_OEO_bypass(AG)
+        if nx.has_path(AG, source=request[0], target=request[1]):
+            path = nx.dijkstra_path(AG, source=request[0], target=request[1])
+            res_path = reserve_path(AG, path, request[2])
+            # print(request, path, res_path)
+            power = serve_request_OEO_bypass(G, path, request, res_path)
+            cost += power
+            traffic_served += request[2] * 0.001
+            num_served += 1
+
+    print(cost / traffic_served, traffic_served, num_served, len(OEO_bypass_requests))
+    return cost / traffic_served, traffic_served
 
 
 if __name__ == '__main__':
-    zr = {}
-    oeo = {}
-    opaque = {}
+    start_time = time.time()
     for i in range(0, 10):
+        zr_bypass = {}
+        zr_opaque = {}
+        oeo_bypass = {}
         for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
             total_traffic = init_num_request * 0.001 * 250
-            ZR = N()
-            ZR_opaque = N()
-            OEO = N()
-            ZR.get_topology()
-            ZR_opaque.get_topology()
-            OEO.get_topology()
-            request_list = gen_request(init_num_request)
-            # request_list = [(1,12,400,1)]
-            print(request_list)
-            average_cost_ZR, TB_ZR = ZR_serve(ZR, request_list)
-            zr[total_traffic] = {'ave_cost': average_cost_ZR, 'served_traffic': TB_ZR}
-            average_cost_OEO, TB_OEO = OEO_serve(OEO, request_list)
-            oeo[total_traffic] = {'ave_cost': average_cost_OEO, 'served_traffic': TB_OEO}
-            average_cost_opaque, TB_opaque = opaque_serve(ZR_opaque, request_list)
-            opaque[total_traffic] = {'ave_cost': average_cost_opaque, 'served_traffic': TB_opaque}
+            ZR_opaque = National_network()
+            ZR_bypass = National_network()
+            OEO_bypass = National_network()
+            start_time = time.time()
+            requests = gen_request(init_num_request)
+            average_cost_ZR_opaque, served_traffic_ZR_opaque = ZR_opaque_serve(ZR_opaque, requests)
+            average_cost_ZR_bypass, served_traffic_ZR_bypass = ZR_bypass_serve(ZR_bypass, requests)
+            average_cost_OEO_bypass, served_traffic_OEO_bypass = OEO_bypass_serve(OEO_bypass, requests)
+            zr_bypass[total_traffic] = {'average_cost': average_cost_ZR_bypass,
+                                        'served_traffic': served_traffic_ZR_bypass}
+            zr_opaque[total_traffic] = {'average_cost': average_cost_ZR_opaque,
+                                        'served_traffic': served_traffic_ZR_opaque}
+            oeo_bypass[total_traffic] = {'average_cost': average_cost_OEO_bypass,
+                                         'served_traffic': served_traffic_OEO_bypass}
         with open('no_grooming.txt', 'a') as file:
             file.write("ZR_bypass:\n")
-            file.write(json.dumps(zr) + '\n')
+            file.write(json.dumps(zr_bypass) + '\n')
             file.write("ZR_opaque:\n")
-            file.write(json.dumps(opaque) + '\n')
+            file.write(json.dumps(zr_opaque) + '\n')
             file.write("OEO_bypass:\n")
-            file.write(json.dumps(oeo) + '\n')
+            file.write(json.dumps(oeo_bypass) + '\n')
             file.write("****************************\n")
-
-    G = ZR.topology
-
-    for u, v, data in G.edges(data=True):
-        data['weight'] = 500 - data['distance']
-
-    pos = nx.spring_layout(G, weight='weight')
-
-    # 绘制节点和边
-    nx.draw(G, pos, with_labels=True)
-
-    edge_labels = {(u, v): data['distance'] for u, v, data in G.edges(data=True)}
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-
-    # 先保存图像
-    plt.savefig('german.png')
-
-    # 然后显示图表
-    plt.show()
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    formatted_time = str(timedelta(seconds=elapsed_time))
+    print("Total time:", formatted_time)

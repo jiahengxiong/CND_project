@@ -6,7 +6,7 @@ from datetime import timedelta
 from CND_project.tools.grooming.OEO_bypass import gene_auxiliary_graph_OEO_bypass, update_weight_OEO_bypass, \
     serve_request_OEO_bypass
 from CND_project.tools.grooming.network import *
-from CND_project.tools.no_grooming.ZR import gen_request
+from CND_project.tools.no_grooming.ZR_bypass import gen_request
 from CND_project.tools.grooming.ZR_opaque import gene_auxiliary_graph, update_weight, serve_request
 from CND_project.tools.grooming.ZR_bypass import gene_auxiliary_graph_ZR_bypass, update_weight_ZR_bypass, reserve_path, \
     serve_request_ZR_bypass
@@ -83,9 +83,9 @@ if __name__ == '__main__':
         oeo_bypass = {}
         for init_num_request in [350, 400, 450, 500, 550, 600, 650, 700]:
             total_traffic = init_num_request * 0.001 * 250
-            ZR_opaque = network()
-            ZR_bypass = network()
-            OEO_bypass = network()
+            ZR_opaque = National_network()
+            ZR_bypass = National_network()
+            OEO_bypass = National_network()
             start_time = time.time()
             requests = gen_request(init_num_request)
             average_cost_ZR_opaque, served_traffic_ZR_opaque = ZR_opaque_serve(ZR_opaque, requests)
