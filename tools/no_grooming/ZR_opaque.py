@@ -56,9 +56,9 @@ def gene_auxiliary_graph_ZR_opaque(G, request):
 def update_weight_ZR_opaque(G):
     for u, v, key, data in G.edges(keys=True, data=True):
         if data['type'] == 'fiber':
-            G.edges[u, v, key]['weight'] = 12 + 0.001 * data['distance']
+            G.edges[u, v, key]['weight'] = 12 + 0.0001 * data['distance']
         else:
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance']
+            G.edges[u, v, key]['weight'] = 0.0001 * data['distance']
 
     return G
 

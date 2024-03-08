@@ -53,7 +53,7 @@ def gene_auxiliary_graph_OEO_bypass(G, request):
             auxiliary_graph.add_edge(u, v, key=key, **data)
     for key, value in enumerate(OEO_REACH_TABLE):
         mod = value
-        if OEO_REACH_TABLE[value]['rate'] == request[2]:
+        if OEO_REACH_TABLE[value]['rate'] >= request[2]:
             virtual_edge = []
             virtual_graph = build_virtual_graph(auxiliary_graph, mod)
             reach = OEO_REACH_TABLE[value]['reach']
@@ -96,9 +96,9 @@ def gene_auxiliary_graph_OEO_bypass(G, request):
 def update_weight_OEO_bypass(G):
     for u, v, key, data in G.edges(keys=True, data=True):
         if data['type'] == 'mod_channel':
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance']
+            G.edges[u, v, key]['weight'] = 0.0001 * data['distance']
         else:
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 24 + 0.001 * math.ceil(OEO_REACH_TABLE[data['mod']]['rate'] / 25)
+            G.edges[u, v, key]['weight'] = 0.0001 * data['distance'] + 24 + 0.00001 * math.ceil(OEO_REACH_TABLE[data['mod']]['rate'] / 25)
 
     return G
 

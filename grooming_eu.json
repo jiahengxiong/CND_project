@@ -1,0 +1,1024 @@
+{
+  "16.0": {
+    "ZR_bypass": {
+      "average_cost": 71.17500000000003,
+      "served_traffic": 0.9999999999999994
+    },
+    "ZR_opaque": {
+      "average_cost": 139.87500000000006,
+      "served_traffic": 0.9999999999999994
+    },
+    "OEO_bypass": {
+      "average_cost": 125.38750000000007,
+      "served_traffic": 0.9999999999999994
+    }
+  },
+  "18.0": {
+    "ZR_bypass": {
+      "average_cost": 71.33333333333334,
+      "served_traffic": 0.9999999999999998
+    },
+    "ZR_opaque": {
+      "average_cost": 135.40000000000003,
+      "served_traffic": 0.9999999999999998
+    },
+    "OEO_bypass": {
+      "average_cost": 127.38888888888889,
+      "served_traffic": 0.9999999999999998
+    }
+  },
+  "20.0": {
+    "ZR_bypass": {
+      "average_cost": 70.25999999999998,
+      "served_traffic": 1.0
+    },
+    "ZR_opaque": {
+      "average_cost": 137.03999999999996,
+      "served_traffic": 1.0
+    },
+    "OEO_bypass": {
+      "average_cost": 125.66999999999999,
+      "served_traffic": 1.0
+    }
+  },
+  "22.0": {
+    "ZR_bypass": {
+      "average_cost": 69.49090909090906,
+      "served_traffic": 1.0000000000000002
+    },
+    "ZR_opaque": {
+      "average_cost": 133.1454545454545,
+      "served_traffic": 1.0000000000000002
+    },
+    "OEO_bypass": {
+      "average_cost": 122.8454545454545,
+      "served_traffic": 1.0000000000000002
+    }
+  },
+  "24.0": {
+    "ZR_bypass": {
+      "average_cost": 70.29999999999997,
+      "served_traffic": 1.0000000000000004
+    },
+    "ZR_opaque": {
+      "average_cost": 136.79999999999993,
+      "served_traffic": 1.0000000000000004
+    },
+    "OEO_bypass": {
+      "average_cost": 124.10833333333328,
+      "served_traffic": 1.0000000000000004
+    }
+  },
+  "26.0": {
+    "ZR_bypass": {
+      "average_cost": 69.23076923076917,
+      "served_traffic": 1.0000000000000007
+    },
+    "ZR_opaque": {
+      "average_cost": 133.7999999999999,
+      "served_traffic": 1.0000000000000007
+    },
+    "OEO_bypass": {
+      "average_cost": 122.09999999999991,
+      "served_traffic": 1.0000000000000007
+    }
+  },
+  "28.000000000000004": {
+    "ZR_bypass": {
+      "average_cost": 69.25714285714281,
+      "served_traffic": 1.0000000000000004
+    },
+    "ZR_opaque": {
+      "average_cost": 133.07142857142847,
+      "served_traffic": 1.0000000000000004
+    },
+    "OEO_bypass": {
+      "average_cost": 120.44285714285706,
+      "served_traffic": 1.0000000000000004
+    }
+  },
+  "30.0": {
+    "ZR_bypass": {
+      "average_cost": 71.19999999999993,
+      "served_traffic": 1.0000000000000009
+    },
+    "ZR_opaque": {
+      "average_cost": 137.83999999999986,
+      "served_traffic": 1.0000000000000009
+    },
+    "OEO_bypass": {
+      "average_cost": 120.86666666666656,
+      "served_traffic": 1.0000000000000009
+    }
+  },
+  "32.0": {
+    "ZR_bypass": {
+      "average_cost": 69.33749999999993,
+      "served_traffic": 1.000000000000001
+    },
+    "ZR_opaque": {
+      "average_cost": 134.09999999999985,
+      "served_traffic": 1.000000000000001
+    },
+    "OEO_bypass": {
+      "average_cost": 119.05624999999989,
+      "served_traffic": 1.000000000000001
+    }
+  },
+  "34.0": {
+    "ZR_bypass": {
+      "average_cost": 70.3058823529411,
+      "served_traffic": 1.000000000000001
+    },
+    "ZR_opaque": {
+      "average_cost": 136.09411764705868,
+      "served_traffic": 1.000000000000001
+    },
+    "OEO_bypass": {
+      "average_cost": 118.67647058823516,
+      "served_traffic": 1.000000000000001
+    }
+  },
+  "36.0": {
+    "ZR_bypass": {
+      "average_cost": 70.06666666666659,
+      "served_traffic": 1.0000000000000009
+    },
+    "ZR_opaque": {
+      "average_cost": 136.89999999999986,
+      "served_traffic": 1.0000000000000009
+    },
+    "OEO_bypass": {
+      "average_cost": 119.37777777777765,
+      "served_traffic": 1.0000000000000009
+    }
+  },
+  "38.0": {
+    "ZR_bypass": {
+      "average_cost": 69.157894736842,
+      "served_traffic": 1.0000000000000013
+    },
+    "ZR_opaque": {
+      "average_cost": 132.15789473684194,
+      "served_traffic": 1.0000000000000013
+    },
+    "OEO_bypass": {
+      "average_cost": 118.93157894736828,
+      "served_traffic": 1.0000000000000013
+    }
+  },
+  "40.0": {
+    "ZR_bypass": {
+      "average_cost": 70.7399999999999,
+      "served_traffic": 1.0000000000000013
+    },
+    "ZR_opaque": {
+      "average_cost": 137.00999999999982,
+      "served_traffic": 1.0000000000000013
+    },
+    "OEO_bypass": {
+      "average_cost": 117.69499999999985,
+      "served_traffic": 1.0000000000000013
+    }
+  },
+  "42.0": {
+    "ZR_bypass": {
+      "average_cost": 69.88571428571417,
+      "served_traffic": 1.0000000000000016
+    },
+    "ZR_opaque": {
+      "average_cost": 133.31428571428552,
+      "served_traffic": 1.0000000000000016
+    },
+    "OEO_bypass": {
+      "average_cost": 118.31904761904745,
+      "served_traffic": 1.0000000000000016
+    }
+  },
+  "44.0": {
+    "ZR_bypass": {
+      "average_cost": 68.94545454545445,
+      "served_traffic": 1.0000000000000013
+    },
+    "ZR_opaque": {
+      "average_cost": 132.73636363636348,
+      "served_traffic": 1.0000000000000013
+    },
+    "OEO_bypass": {
+      "average_cost": 116.20909090909075,
+      "served_traffic": 1.0000000000000013
+    }
+  },
+  "46.0": {
+    "ZR_bypass": {
+      "average_cost": 68.8695652173912,
+      "served_traffic": 1.0000000000000016
+    },
+    "ZR_opaque": {
+      "average_cost": 132.8608695652172,
+      "served_traffic": 1.0000000000000016
+    },
+    "OEO_bypass": {
+      "average_cost": 116.61304347826072,
+      "served_traffic": 1.0000000000000016
+    }
+  },
+  "48.0": {
+    "ZR_bypass": {
+      "average_cost": 69.52499999999989,
+      "served_traffic": 1.0000000000000016
+    },
+    "ZR_opaque": {
+      "average_cost": 132.7749999999998,
+      "served_traffic": 1.0000000000000016
+    },
+    "OEO_bypass": {
+      "average_cost": 117.0916666666665,
+      "served_traffic": 1.0000000000000016
+    }
+  },
+  "50.0": {
+    "ZR_bypass": {
+      "average_cost": 69.47999999999989,
+      "served_traffic": 1.0000000000000018
+    },
+    "ZR_opaque": {
+      "average_cost": 132.7679999999998,
+      "served_traffic": 1.0000000000000018
+    },
+    "OEO_bypass": {
+      "average_cost": 115.99599999999982,
+      "served_traffic": 1.0000000000000018
+    }
+  },
+  "52.0": {
+    "ZR_bypass": {
+      "average_cost": 68.44615384615375,
+      "served_traffic": 1.0000000000000013
+    },
+    "ZR_opaque": {
+      "average_cost": 129.34615384615364,
+      "served_traffic": 1.0000000000000013
+    },
+    "OEO_bypass": {
+      "average_cost": 115.40769230769214,
+      "served_traffic": 1.0000000000000013
+    }
+  },
+  "54.0": {
+    "ZR_bypass": {
+      "average_cost": 69.111111111111,
+      "served_traffic": 1.0000000000000013
+    },
+    "ZR_opaque": {
+      "average_cost": 132.55555555555537,
+      "served_traffic": 1.0000000000000013
+    },
+    "OEO_bypass": {
+      "average_cost": 116.34444444444428,
+      "served_traffic": 1.0000000000000013
+    }
+  },
+  "56.00000000000001": {
+    "ZR_bypass": {
+      "average_cost": 68.89285714285707,
+      "served_traffic": 1.000000000000001
+    },
+    "ZR_opaque": {
+      "average_cost": 131.3785714285713,
+      "served_traffic": 1.000000000000001
+    },
+    "OEO_bypass": {
+      "average_cost": 115.16428571428557,
+      "served_traffic": 1.000000000000001
+    }
+  },
+  "57.99999999999999": {
+    "ZR_bypass": {
+      "average_cost": 70.30344827586194,
+      "served_traffic": 1.0000000000000018
+    },
+    "ZR_opaque": {
+      "average_cost": 133.01379310344805,
+      "served_traffic": 1.0000000000000018
+    },
+    "OEO_bypass": {
+      "average_cost": 115.19999999999979,
+      "served_traffic": 1.0000000000000018
+    }
+  },
+  "60.0": {
+    "ZR_bypass": {
+      "average_cost": 69.59999999999988,
+      "served_traffic": 1.0000000000000016
+    },
+    "ZR_opaque": {
+      "average_cost": 132.2199999999998,
+      "served_traffic": 1.0000000000000016
+    },
+    "OEO_bypass": {
+      "average_cost": 115.29666666666648,
+      "served_traffic": 1.0000000000000016
+    }
+  },
+  "62.0": {
+    "ZR_bypass": {
+      "average_cost": 70.16129032258051,
+      "served_traffic": 1.0000000000000018
+    },
+    "ZR_opaque": {
+      "average_cost": 131.12903225806429,
+      "served_traffic": 1.0000000000000018
+    },
+    "OEO_bypass": {
+      "average_cost": 115.56774193548367,
+      "served_traffic": 1.0000000000000018
+    }
+  },
+  "64.0": {
+    "ZR_bypass": {
+      "average_cost": 69.82499999999987,
+      "served_traffic": 1.000000000000002
+    },
+    "ZR_opaque": {
+      "average_cost": 131.49374999999975,
+      "served_traffic": 1.000000000000002
+    },
+    "OEO_bypass": {
+      "average_cost": 116.14999999999979,
+      "served_traffic": 1.000000000000002
+    }
+  },
+  "66.0": {
+    "ZR_bypass": {
+      "average_cost": 69.58181818181808,
+      "served_traffic": 1.0000000000000016
+    },
+    "ZR_opaque": {
+      "average_cost": 131.21818181818165,
+      "served_traffic": 1.0000000000000016
+    },
+    "OEO_bypass": {
+      "average_cost": 115.09090909090894,
+      "served_traffic": 1.0000000000000016
+    }
+  },
+  "68.0": {
+    "ZR_bypass": {
+      "average_cost": 69.31764705882347,
+      "served_traffic": 1.000000000000001
+    },
+    "ZR_opaque": {
+      "average_cost": 131.55882352941163,
+      "served_traffic": 1.000000000000001
+    },
+    "OEO_bypass": {
+      "average_cost": 116.20882352941165,
+      "served_traffic": 1.000000000000001
+    }
+  },
+  "70.0": {
+    "ZR_bypass": {
+      "average_cost": 70.0628571428571,
+      "served_traffic": 1.0000000000000004
+    },
+    "ZR_opaque": {
+      "average_cost": 132.7714285714285,
+      "served_traffic": 1.0000000000000004
+    },
+    "OEO_bypass": {
+      "average_cost": 113.49662424362684,
+      "served_traffic": 0.998428571428572
+    }
+  },
+  "72.0": {
+    "ZR_bypass": {
+      "average_cost": 70.06666666666663,
+      "served_traffic": 1.0000000000000004
+    },
+    "ZR_opaque": {
+      "average_cost": 131.2166666666666,
+      "served_traffic": 1.0000000000000004
+    },
+    "OEO_bypass": {
+      "average_cost": 115.77499999999995,
+      "served_traffic": 1.0000000000000004
+    }
+  },
+  "74.0": {
+    "ZR_bypass": {
+      "average_cost": 70.02162162162159,
+      "served_traffic": 1.0000000000000004
+    },
+    "ZR_opaque": {
+      "average_cost": 130.5729729729729,
+      "served_traffic": 1.0000000000000004
+    },
+    "OEO_bypass": {
+      "average_cost": 115.81081081081076,
+      "served_traffic": 1.0000000000000004
+    }
+  },
+  "76.0": {
+    "ZR_bypass": {
+      "average_cost": 70.59473684210529,
+      "served_traffic": 0.9999999999999997
+    },
+    "ZR_opaque": {
+      "average_cost": 132.01578947368426,
+      "served_traffic": 0.9999999999999997
+    },
+    "OEO_bypass": {
+      "average_cost": 115.99287909590286,
+      "served_traffic": 0.9939473684210522
+    }
+  },
+  "78.0": {
+    "ZR_bypass": {
+      "average_cost": 71.05892485892487,
+      "served_traffic": 0.9996153846153846
+    },
+    "ZR_opaque": {
+      "average_cost": 134.44615384615386,
+      "served_traffic": 0.9999999999999998
+    },
+    "OEO_bypass": {
+      "average_cost": 114.86886980023492,
+      "served_traffic": 0.9915384615384614
+    }
+  },
+  "80.0": {
+    "ZR_bypass": {
+      "average_cost": 71.68500000000003,
+      "served_traffic": 0.9999999999999994
+    },
+    "ZR_opaque": {
+      "average_cost": 133.45500000000004,
+      "served_traffic": 0.9999999999999994
+    },
+    "OEO_bypass": {
+      "average_cost": 118.45925453813473,
+      "served_traffic": 0.9851249999999995
+    }
+  },
+  "82.0": {
+    "ZR_bypass": {
+      "average_cost": 70.77073170731714,
+      "served_traffic": 0.9999999999999993
+    },
+    "ZR_opaque": {
+      "average_cost": 131.76585365853668,
+      "served_traffic": 0.9999999999999993
+    },
+    "OEO_bypass": {
+      "average_cost": 116.51753675590562,
+      "served_traffic": 0.9940243902439019
+    }
+  },
+  "84.0": {
+    "ZR_bypass": {
+      "average_cost": 72.22278132000694,
+      "served_traffic": 0.9986904761904756
+    },
+    "ZR_opaque": {
+      "average_cost": 134.98571428571438,
+      "served_traffic": 0.9999999999999993
+    },
+    "OEO_bypass": {
+      "average_cost": 117.81574252876058,
+      "served_traffic": 0.9663095238095231
+    }
+  },
+  "86.0": {
+    "ZR_bypass": {
+      "average_cost": 72.85638103546997,
+      "served_traffic": 0.9991860465116268
+    },
+    "ZR_opaque": {
+      "average_cost": 134.38604651162805,
+      "served_traffic": 0.9999999999999989
+    },
+    "OEO_bypass": {
+      "average_cost": 116.63145278556271,
+      "served_traffic": 0.9689534883720918
+    }
+  },
+  "88.0": {
+    "ZR_bypass": {
+      "average_cost": 72.46733220050989,
+      "served_traffic": 0.9972727272727259
+    },
+    "ZR_opaque": {
+      "average_cost": 134.53636363636383,
+      "served_traffic": 0.9999999999999986
+    },
+    "OEO_bypass": {
+      "average_cost": 117.29697793176297,
+      "served_traffic": 0.9515909090909078
+    }
+  },
+  "90.0": {
+    "ZR_bypass": {
+      "average_cost": 71.88470681541018,
+      "served_traffic": 0.9989999999999982
+    },
+    "ZR_opaque": {
+      "average_cost": 132.49333333333357,
+      "served_traffic": 0.9999999999999982
+    },
+    "OEO_bypass": {
+      "average_cost": 114.74286991235051,
+      "served_traffic": 0.967777777777776
+    }
+  },
+  "92.0": {
+    "ZR_bypass": {
+      "average_cost": 73.4858291040649,
+      "served_traffic": 0.9945652173913027
+    },
+    "ZR_opaque": {
+      "average_cost": 136.35652173913064,
+      "served_traffic": 0.9999999999999984
+    },
+    "OEO_bypass": {
+      "average_cost": 117.51159487228055,
+      "served_traffic": 0.9409782608695638
+    }
+  },
+  "94.0": {
+    "ZR_bypass": {
+      "average_cost": 71.62619278981073,
+      "served_traffic": 0.9956382978723385
+    },
+    "ZR_opaque": {
+      "average_cost": 133.17446808510664,
+      "served_traffic": 0.999999999999998
+    },
+    "OEO_bypass": {
+      "average_cost": 116.20044024535,
+      "served_traffic": 0.9329787234042535
+    }
+  },
+  "96.0": {
+    "ZR_bypass": {
+      "average_cost": 73.65076805662636,
+      "served_traffic": 0.9885416666666644
+    },
+    "ZR_opaque": {
+      "average_cost": 133.5125000000003,
+      "served_traffic": 0.9999999999999977
+    },
+    "OEO_bypass": {
+      "average_cost": 117.86872342598437,
+      "served_traffic": 0.9432291666666645
+    }
+  },
+  "98.0": {
+    "ZR_bypass": {
+      "average_cost": 73.35881285294911,
+      "served_traffic": 0.9785714285714265
+    },
+    "ZR_opaque": {
+      "average_cost": 135.11491754596605,
+      "served_traffic": 0.9988775510204061
+    },
+    "OEO_bypass": {
+      "average_cost": 116.59915145576186,
+      "served_traffic": 0.9126530612244877
+    }
+  },
+  "100.0": {
+    "ZR_bypass": {
+      "average_cost": 73.53866889508872,
+      "served_traffic": 0.9746999999999977
+    },
+    "ZR_opaque": {
+      "average_cost": 134.91600000000034,
+      "served_traffic": 0.9999999999999976
+    },
+    "OEO_bypass": {
+      "average_cost": 117.39631879475333,
+      "served_traffic": 0.8922999999999981
+    }
+  },
+  "102.0": {
+    "ZR_bypass": {
+      "average_cost": 74.01602898079338,
+      "served_traffic": 0.9776470588235269
+    },
+    "ZR_opaque": {
+      "average_cost": 134.12941176470628,
+      "served_traffic": 0.9999999999999973
+    },
+    "OEO_bypass": {
+      "average_cost": 115.66881557606197,
+      "served_traffic": 0.8975490196078407
+    }
+  },
+  "104.0": {
+    "ZR_bypass": {
+      "average_cost": 73.74696866743776,
+      "served_traffic": 0.9368269230769206
+    },
+    "ZR_opaque": {
+      "average_cost": 137.67517137655713,
+      "served_traffic": 0.9963461538461511
+    },
+    "OEO_bypass": {
+      "average_cost": 115.87052357642668,
+      "served_traffic": 0.868461538461536
+    }
+  },
+  "106.0": {
+    "ZR_bypass": {
+      "average_cost": 73.51117638522148,
+      "served_traffic": 0.9428301886792431
+    },
+    "ZR_opaque": {
+      "average_cost": 137.61004398566752,
+      "served_traffic": 0.9970754716981107
+    },
+    "OEO_bypass": {
+      "average_cost": 115.41967032995449,
+      "served_traffic": 0.8631132075471675
+    }
+  },
+  "108.0": {
+    "ZR_bypass": {
+      "average_cost": 74.6179635687251,
+      "served_traffic": 0.947685185185183
+    },
+    "ZR_opaque": {
+      "average_cost": 136.44444444444483,
+      "served_traffic": 0.9999999999999976
+    },
+    "OEO_bypass": {
+      "average_cost": 116.76201176056051,
+      "served_traffic": 0.8610185185185163
+    }
+  },
+  "110.00000000000001": {
+    "ZR_bypass": {
+      "average_cost": 73.51114675412018,
+      "served_traffic": 0.9265454545454519
+    },
+    "ZR_opaque": {
+      "average_cost": 136.4594845652794,
+      "served_traffic": 0.9954545454545423
+    },
+    "OEO_bypass": {
+      "average_cost": 115.46773779692751,
+      "served_traffic": 0.8518181818181791
+    }
+  },
+  "112.00000000000001": {
+    "ZR_bypass": {
+      "average_cost": 73.34022463726785,
+      "served_traffic": 0.9198214285714261
+    },
+    "ZR_opaque": {
+      "average_cost": 135.48702708464242,
+      "served_traffic": 0.9973214285714253
+    },
+    "OEO_bypass": {
+      "average_cost": 116.0883342241365,
+      "served_traffic": 0.8424999999999973
+    }
+  },
+  "114.00000000000001": {
+    "ZR_bypass": {
+      "average_cost": 74.26915254471382,
+      "served_traffic": 0.9129824561403481
+    },
+    "ZR_opaque": {
+      "average_cost": 137.34047032793111,
+      "served_traffic": 0.9933333333333298
+    },
+    "OEO_bypass": {
+      "average_cost": 116.81725429939328,
+      "served_traffic": 0.8230701754385936
+    }
+  },
+  "115.99999999999999": {
+    "ZR_bypass": {
+      "average_cost": 72.64219227917876,
+      "served_traffic": 0.8895689655172392
+    },
+    "ZR_opaque": {
+      "average_cost": 134.61709219076587,
+      "served_traffic": 0.9905172413793073
+    },
+    "OEO_bypass": {
+      "average_cost": 115.14221582245382,
+      "served_traffic": 0.8213793103448251
+    }
+  },
+  "118.0": {
+    "ZR_bypass": {
+      "average_cost": 73.58253349118084,
+      "served_traffic": 0.8966949152542348
+    },
+    "ZR_opaque": {
+      "average_cost": 135.10313647212723,
+      "served_traffic": 0.9886440677966067
+    },
+    "OEO_bypass": {
+      "average_cost": 114.83877075637983,
+      "served_traffic": 0.8212711864406751
+    }
+  },
+  "120.0": {
+    "ZR_bypass": {
+      "average_cost": 72.97643333592761,
+      "served_traffic": 0.8739999999999976
+    },
+    "ZR_opaque": {
+      "average_cost": 135.51075513940796,
+      "served_traffic": 0.9797499999999966
+    },
+    "OEO_bypass": {
+      "average_cost": 114.54339898492951,
+      "served_traffic": 0.8092499999999971
+    }
+  },
+  "122.0": {
+    "ZR_bypass": {
+      "average_cost": 74.00374379568875,
+      "served_traffic": 0.8745081967213088
+    },
+    "ZR_opaque": {
+      "average_cost": 137.37950507703627,
+      "served_traffic": 0.9863114754098324
+    },
+    "OEO_bypass": {
+      "average_cost": 114.51542324388359,
+      "served_traffic": 0.8000819672131119
+    }
+  },
+  "124.0": {
+    "ZR_bypass": {
+      "average_cost": 73.35126592297145,
+      "served_traffic": 0.8665322580645137
+    },
+    "ZR_opaque": {
+      "average_cost": 137.1678452521747,
+      "served_traffic": 0.9788709677419319
+    },
+    "OEO_bypass": {
+      "average_cost": 115.75659961152105,
+      "served_traffic": 0.7837096774193522
+    }
+  },
+  "126.0": {
+    "ZR_bypass": {
+      "average_cost": 74.23528964446828,
+      "served_traffic": 0.8603174603174578
+    },
+    "ZR_opaque": {
+      "average_cost": 138.13332774025238,
+      "served_traffic": 0.9746825396825362
+    },
+    "OEO_bypass": {
+      "average_cost": 115.66004900954417,
+      "served_traffic": 0.7856349206349178
+    }
+  },
+  "128.0": {
+    "ZR_bypass": {
+      "average_cost": 73.62808497299689,
+      "served_traffic": 0.8479687499999974
+    },
+    "ZR_opaque": {
+      "average_cost": 136.93611388789662,
+      "served_traffic": 0.971562499999996
+    },
+    "OEO_bypass": {
+      "average_cost": 115.65145402354706,
+      "served_traffic": 0.7682031249999971
+    }
+  },
+  "130.0": {
+    "ZR_bypass": {
+      "average_cost": 74.03198851761155,
+      "served_traffic": 0.8322307692307666
+    },
+    "ZR_opaque": {
+      "average_cost": 137.56603376981417,
+      "served_traffic": 0.965692307692304
+    },
+    "OEO_bypass": {
+      "average_cost": 117.3974991456912,
+      "served_traffic": 0.7470769230769206
+    }
+  },
+  "132.0": {
+    "ZR_bypass": {
+      "average_cost": 73.85948144497954,
+      "served_traffic": 0.8164393939393915
+    },
+    "ZR_opaque": {
+      "average_cost": 137.52907195981953,
+      "served_traffic": 0.9550757575757537
+    },
+    "OEO_bypass": {
+      "average_cost": 116.27094020400622,
+      "served_traffic": 0.7478030303030275
+    }
+  },
+  "134.0": {
+    "ZR_bypass": {
+      "average_cost": 73.85827331571775,
+      "served_traffic": 0.8161194029850722
+    },
+    "ZR_opaque": {
+      "average_cost": 137.46643141546673,
+      "served_traffic": 0.9703731343283545
+    },
+    "OEO_bypass": {
+      "average_cost": 116.07165099078495,
+      "served_traffic": 0.7452238805970126
+    }
+  },
+  "136.0": {
+    "ZR_bypass": {
+      "average_cost": 73.37203623436106,
+      "served_traffic": 0.8063235294117626
+    },
+    "ZR_opaque": {
+      "average_cost": 138.0258454148281,
+      "served_traffic": 0.950808823529408
+    },
+    "OEO_bypass": {
+      "average_cost": 115.4685492024939,
+      "served_traffic": 0.7358088235294091
+    }
+  },
+  "138.0": {
+    "ZR_bypass": {
+      "average_cost": 72.58907764859222,
+      "served_traffic": 0.8052173913043452
+    },
+    "ZR_opaque": {
+      "average_cost": 138.23804299337456,
+      "served_traffic": 0.9520289855072421
+    },
+    "OEO_bypass": {
+      "average_cost": 115.61083664867616,
+      "served_traffic": 0.724492753623186
+    }
+  },
+  "140.0": {
+    "ZR_bypass": {
+      "average_cost": 73.07699502670451,
+      "served_traffic": 0.7979999999999976
+    },
+    "ZR_opaque": {
+      "average_cost": 136.57959659969615,
+      "served_traffic": 0.9459285714285676
+    },
+    "OEO_bypass": {
+      "average_cost": 114.75288715861936,
+      "served_traffic": 0.7338571428571402
+    }
+  },
+  "142.0": {
+    "ZR_bypass": {
+      "average_cost": 73.3601120178104,
+      "served_traffic": 0.7819014084507017
+    },
+    "ZR_opaque": {
+      "average_cost": 138.12010975805168,
+      "served_traffic": 0.9408450704225311
+    },
+    "OEO_bypass": {
+      "average_cost": 114.15991498709477,
+      "served_traffic": 0.7138028169014057
+    }
+  },
+  "144.0": {
+    "ZR_bypass": {
+      "average_cost": 72.80057656390849,
+      "served_traffic": 0.7752083333333306
+    },
+    "ZR_opaque": {
+      "average_cost": 138.41856208076103,
+      "served_traffic": 0.9430555555555511
+    },
+    "OEO_bypass": {
+      "average_cost": 115.29118770819723,
+      "served_traffic": 0.7016666666666638
+    }
+  },
+  "146.0": {
+    "ZR_bypass": {
+      "average_cost": 73.11527164166894,
+      "served_traffic": 0.7656849315068467
+    },
+    "ZR_opaque": {
+      "average_cost": 136.9400697234342,
+      "served_traffic": 0.9298630136986258
+    },
+    "OEO_bypass": {
+      "average_cost": 113.97838673736246,
+      "served_traffic": 0.7050684931506821
+    }
+  },
+  "148.0": {
+    "ZR_bypass": {
+      "average_cost": 72.8664192682472,
+      "served_traffic": 0.7662162162162136
+    },
+    "ZR_opaque": {
+      "average_cost": 137.24385420706346,
+      "served_traffic": 0.9245945945945901
+    },
+    "OEO_bypass": {
+      "average_cost": 114.50633561807133,
+      "served_traffic": 0.699527027027024
+    }
+  },
+  "150.0": {
+    "ZR_bypass": {
+      "average_cost": 73.87500965800294,
+      "served_traffic": 0.7486666666666639
+    },
+    "ZR_opaque": {
+      "average_cost": 137.73523303958456,
+      "served_traffic": 0.9253333333333291
+    },
+    "OEO_bypass": {
+      "average_cost": 114.87897972090687,
+      "served_traffic": 0.6889999999999972
+    }
+  },
+  "152.0": {
+    "ZR_bypass": {
+      "average_cost": 73.14913470207455,
+      "served_traffic": 0.748355263157892
+    },
+    "ZR_opaque": {
+      "average_cost": 139.6685208614959,
+      "served_traffic": 0.9193421052631534
+    },
+    "OEO_bypass": {
+      "average_cost": 114.9996774539538,
+      "served_traffic": 0.6823684210526285
+    }
+  },
+  "154.0": {
+    "ZR_bypass": {
+      "average_cost": 72.84594361094084,
+      "served_traffic": 0.739350649350647
+    },
+    "ZR_opaque": {
+      "average_cost": 137.27625242348176,
+      "served_traffic": 0.9169480519480475
+    },
+    "OEO_bypass": {
+      "average_cost": 115.81427434794463,
+      "served_traffic": 0.6713636363636339
+    }
+  },
+  "156.0": {
+    "ZR_bypass": {
+      "average_cost": 72.807200698117,
+      "served_traffic": 0.7292307692307668
+    },
+    "ZR_opaque": {
+      "average_cost": 137.84880594247167,
+      "served_traffic": 0.9116666666666623
+    },
+    "OEO_bypass": {
+      "average_cost": 116.7439436987107,
+      "served_traffic": 0.6679487179487151
+    }
+  },
+  "158.0": {
+    "ZR_bypass": {
+      "average_cost": 72.80261822403418,
+      "served_traffic": 0.7099999999999976
+    },
+    "ZR_opaque": {
+      "average_cost": 138.9599668880892,
+      "served_traffic": 0.8956329113924012
+    },
+    "OEO_bypass": {
+      "average_cost": 116.84976358418086,
+      "served_traffic": 0.645189873417719
+    }
+  },
+  "160.0": {
+    "ZR_bypass": {
+      "average_cost": 72.61400826666843,
+      "served_traffic": 0.7158124999999976
+    },
+    "ZR_opaque": {
+      "average_cost": 138.8524797622443,
+      "served_traffic": 0.9007499999999956
+    },
+    "OEO_bypass": {
+      "average_cost": 114.7462605701191,
+      "served_traffic": 0.6563124999999971
+    }
+  }
+}

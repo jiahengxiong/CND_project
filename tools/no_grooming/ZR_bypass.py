@@ -36,7 +36,7 @@ import random
 
 
 def gen_request(num):
-    rate_list = [100, 200, 300, 400]
+    rate_list = [100, 200, 300]
     avg_rate = float(sum(rate_list) / len(rate_list))
     lim_rate = float(avg_rate * num)
     print(avg_rate, lim_rate)
@@ -44,7 +44,7 @@ def gen_request(num):
     total_rate = 0
 
     for i in range(num * 5):
-        src, dst = random.sample(range(1, 17), 2)
+        src, dst = random.sample(range(1, 28), 2)
         if total_rate < lim_rate:
             rate = random.choice(rate_list)
             if total_rate + rate > lim_rate:
@@ -96,7 +96,7 @@ def gene_auxiliary_graph_ZR_bypass(G, request):
             auxiliary_graph.add_edge(u, v, key=key, **data)
     for key, value in enumerate(ZR_REACH_TABLE):
         mod = value
-        if ZR_REACH_TABLE[value]['rate'] == request[2]:
+        if ZR_REACH_TABLE[value]['rate'] >= request[2]:
             virtual_edge = []
             virtual_graph = build_virtual_graph(auxiliary_graph, mod)
             reach = ZR_REACH_TABLE[value]['reach']
@@ -139,9 +139,9 @@ def gene_auxiliary_graph_ZR_bypass(G, request):
 def update_weight_ZR_bypass(G):
     for u, v, key, data in G.edges(keys=True, data=True):
         if data['type'] == 'mod_channel':
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance']
+            G.edges[u, v, key]['weight'] = 0.0001 * data['distance']
         else:
-            G.edges[u, v, key]['weight'] = 0.001 * data['distance'] + 12 + 0.001 * math.ceil(ZR_REACH_TABLE[data['mod']]['rate'] / 25)
+            G.edges[u, v, key]['weight'] = 0.0001 * data['distance'] + 12 + 0.00001 * math.ceil(ZR_REACH_TABLE[data['mod']]['rate'] / 25)
 
     return G
 
